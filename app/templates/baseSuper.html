@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/Logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+</head>
+
+<body>
+    <div class="loader" id="Hamster-loader">
+        <!-- From Uiverse.io by Nawsome -->
+        <div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+            <div class="wheel"></div>
+            <div class="hamster">
+                <div class="hamster__body">
+                    <div class="hamster__head">
+                        <div class="hamster__ear"></div>
+                        <div class="hamster__eye"></div>
+                        <div class="hamster__nose"></div>
+                    </div>
+                    <div class="hamster__limb hamster__limb--fr"></div>
+                    <div class="hamster__limb hamster__limb--fl"></div>
+                    <div class="hamster__limb hamster__limb--br"></div>
+                    <div class="hamster__limb hamster__limb--bl"></div>
+                    <div class="hamster__tail"></div>
+                </div>
+            </div>
+            <div class="spoke"></div>
+        </div>
+    </div>
+
+    <header class="hidden conteiner-header-page">
+        <nav class="navigation-bar">
+            <a href="{{ url_for('Seccion_Camara') }}"><img src="{{ url_for('static', filename='images/Logo.png') }}"
+                    alt="Logo" width="45" height="45" id="logo"></a>
+            <a href="{{ url_for('Seccion_Camara') }}">Inicio</a>
+            <a href="#asd">Detecciones</a>
+            <a href="#asd">Alertas</a>
+            <a href="#sa">Personal CCAI</a>
+            <a href="{{ url_for('Seccion_Ayuda') }}">Ayuda</a>
+            <a href="{{ url_for('Seccion_Registrar') }}">Usuarios</a>
+            <!-- <a href="{{ url_for('Seccion_Recuperar') }}">Cambiar contraseñas</a> -->
+            <div class="user-options">
+                <a href="{{ url_for('Seccion_Usuario') }}"><img src="{{ url_for('static', filename = 'Images/usuario-de-perfil.webp') }}" alt="Usuario" width="40" height="40" id="User-icon"></a>
+                <form action="/Log_Out" method="get"> 
+                    <input type="submit" value="Log out">
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}
+        <div class="message-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">
+                            {{ message }}
+                            <button type="button" id="closeNoti">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    {% endblock %}
+    {% block body %}
+
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="{{ url_for('static', filename = 'JavaScript/index.js') }}"></script>
+</body>
+
+</html>

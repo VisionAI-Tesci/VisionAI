@@ -1,0 +1,19 @@
+{% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
+{% block title %}Vision AI - Inicio{% endblock %}
+{% block body %}
+<div class="hidden section-camera-container">
+    <h1>Cámara en tiempo real</h1>
+    <div class="camera-container">
+        <figure class="Camera">
+            <img src="{{ url_for('Camera_Activate') }}" alt="Cámara ejecutandose" id="Canon-Camera">
+        </figure>
+        <div class="people-detected">
+            <h2>Personal Detectado</h2>
+        </div>
+    </div>
+</div>
+<footer class="hidden Copyright" style="color: black;">
+    <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+</footer>
+
+{% endblock %}

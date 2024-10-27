@@ -1,0 +1,814 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.0em;
+    margin: 0px;
+}
+
+.hidden {
+    display: none;
+    overflow: hidden;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    /* horizontal */
+    align-items: center;
+    /*vertical*/
+    height: 100vh;
+}
+
+/* From Uiverse.io by Nawsome */
+.wheel-and-hamster {
+    --dur: 1s;
+    position: relative;
+    width: 12em;
+    height: 12em;
+    font-size: 14px;
+}
+
+.wheel,
+.hamster,
+.hamster div,
+.spoke {
+    position: absolute;
+}
+
+.wheel,
+.spoke {
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wheel {
+    background: radial-gradient(100% 100% at center, hsla(0, 0%, 60%, 0) 47.8%, hsl(0, 0%, 60%) 48%);
+    z-index: 2;
+}
+
+.hamster {
+    animation: hamster var(--dur) ease-in-out infinite;
+    top: 50%;
+    left: calc(50% - 3.5em);
+    width: 7em;
+    height: 3.75em;
+    transform: rotate(4deg) translate(-0.8em, 1.85em);
+    transform-origin: 50% 0;
+    z-index: 1;
+}
+
+.hamster__head {
+    animation: hamsterHead var(--dur) ease-in-out infinite;
+    background: hsl(30, 90%, 55%);
+    border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+    box-shadow: 0 -0.25em 0 hsl(30, 90%, 80%) inset,
+        0.75em -1.55em 0 hsl(30, 90%, 90%) inset;
+    top: 0;
+    left: -2em;
+    width: 2.75em;
+    height: 2.5em;
+    transform-origin: 100% 50%;
+}
+
+.hamster__ear {
+    animation: hamsterEar var(--dur) ease-in-out infinite;
+    background: hsl(0, 90%, 85%);
+    border-radius: 50%;
+    box-shadow: -0.25em 0 hsl(30, 90%, 55%) inset;
+    top: -0.25em;
+    right: -0.25em;
+    width: 0.75em;
+    height: 0.75em;
+    transform-origin: 50% 75%;
+}
+
+.hamster__eye {
+    animation: hamsterEye var(--dur) linear infinite;
+    background-color: hsl(0, 0%, 0%);
+    border-radius: 50%;
+    top: 0.375em;
+    left: 1.25em;
+    width: 0.5em;
+    height: 0.5em;
+}
+
+.hamster__nose {
+    background: hsl(0, 90%, 75%);
+    border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+    top: 0.75em;
+    left: 0;
+    width: 0.2em;
+    height: 0.25em;
+}
+
+.hamster__body {
+    animation: hamsterBody var(--dur) ease-in-out infinite;
+    background: hsl(30, 90%, 90%);
+    border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+    box-shadow: 0.1em 0.75em 0 hsl(30, 90%, 55%) inset,
+        0.15em -0.5em 0 hsl(30, 90%, 80%) inset;
+    top: 0.25em;
+    left: 2em;
+    width: 4.5em;
+    height: 3em;
+    transform-origin: 17% 50%;
+    transform-style: preserve-3d;
+}
+
+.hamster__limb--fr,
+.hamster__limb--fl {
+    clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0% 100%, 40% 80%);
+    top: 2em;
+    left: 0.5em;
+    width: 1em;
+    height: 1.5em;
+    transform-origin: 50% 0;
+}
+
+.hamster__limb--fr {
+    animation: hamsterFRLimb var(--dur) linear infinite;
+    background: linear-gradient(hsl(30, 90%, 80%) 80%, hsl(0, 90%, 75%) 80%);
+    transform: rotate(15deg) translateZ(-1px);
+}
+
+.hamster__limb--fl {
+    animation: hamsterFLLimb var(--dur) linear infinite;
+    background: linear-gradient(hsl(30, 90%, 90%) 80%, hsl(0, 90%, 85%) 80%);
+    transform: rotate(15deg);
+}
+
+.hamster__limb--br,
+.hamster__limb--bl {
+    border-radius: 0.75em 0.75em 0 0;
+    clip-path: polygon(0 0, 100% 0, 100% 30%, 70% 90%, 70% 100%, 30% 100%, 40% 90%, 0% 30%);
+    top: 1em;
+    left: 2.8em;
+    width: 1.5em;
+    height: 2.5em;
+    transform-origin: 50% 30%;
+}
+
+.hamster__limb--br {
+    animation: hamsterBRLimb var(--dur) linear infinite;
+    background: linear-gradient(hsl(30, 90%, 80%) 90%, hsl(0, 90%, 75%) 90%);
+    transform: rotate(-25deg) translateZ(-1px);
+}
+
+.hamster__limb--bl {
+    animation: hamsterBLLimb var(--dur) linear infinite;
+    background: linear-gradient(hsl(30, 90%, 90%) 90%, hsl(0, 90%, 85%) 90%);
+    transform: rotate(-25deg);
+}
+
+.hamster__tail {
+    animation: hamsterTail var(--dur) linear infinite;
+    background: hsl(0, 90%, 85%);
+    border-radius: 0.25em 50% 50% 0.25em;
+    box-shadow: 0 -0.2em 0 hsl(0, 90%, 75%) inset;
+    top: 1.5em;
+    right: -0.5em;
+    width: 1em;
+    height: 0.5em;
+    transform: rotate(30deg) translateZ(-1px);
+    transform-origin: 0.25em 0.25em;
+}
+
+.spoke {
+    animation: spoke var(--dur) linear infinite;
+    background: radial-gradient(100% 100% at center, hsl(0, 0%, 60%) 4.8%, hsla(0, 0%, 60%, 0) 5%),
+        linear-gradient(hsla(0, 0%, 55%, 0) 46.9%, hsl(0, 0%, 65%) 47% 52.9%, hsla(0, 0%, 65%, 0) 53%) 50% 50% / 99% 99% no-repeat;
+}
+
+/* Animations */
+@keyframes hamster {
+
+    from,
+    to {
+        transform: rotate(4deg) translate(-0.8em, 1.85em);
+    }
+
+    50% {
+        transform: rotate(0) translate(-0.8em, 1.85em);
+    }
+}
+
+@keyframes hamsterHead {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(0);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(8deg);
+    }
+}
+
+@keyframes hamsterEye {
+
+    from,
+    90%,
+    to {
+        transform: scaleY(1);
+    }
+
+    95% {
+        transform: scaleY(0);
+    }
+}
+
+@keyframes hamsterEar {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(0);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(12deg);
+    }
+}
+
+@keyframes hamsterBody {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(0);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(-2deg);
+    }
+}
+
+@keyframes hamsterFRLimb {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(50deg) translateZ(-1px);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(-30deg) translateZ(-1px);
+    }
+}
+
+@keyframes hamsterFLLimb {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(-30deg);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(50deg);
+    }
+}
+
+@keyframes hamsterBRLimb {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(-60deg) translateZ(-1px);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(20deg) translateZ(-1px);
+    }
+}
+
+@keyframes hamsterBLLimb {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(20deg);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(-60deg);
+    }
+}
+
+@keyframes hamsterTail {
+
+    from,
+    25%,
+    50%,
+    75%,
+    to {
+        transform: rotate(30deg) translateZ(-1px);
+    }
+
+    12.5%,
+    37.5%,
+    62.5%,
+    87.5% {
+        transform: rotate(10deg) translateZ(-1px);
+    }
+}
+
+@keyframes spoke {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(-1turn);
+    }
+}
+
+/* CSS de la pagina */
+.container_Father {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 95vh;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.error {
+    width: max-content;
+    justify-self: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(220, 20, 60, 0.8);
+    color: #ffffff;
+    font-style: italic;
+    border-radius: 5px;
+    border: 3px solid crimson;
+}
+
+.info {
+    width: max-content;
+    justify-self: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(53, 114, 239, 0.8);
+    color: #ffffff;
+    font-style: italic;
+    border-radius: 5px;
+    border: 3px solid rgb(53, 114, 239);
+}
+
+.warning {
+    width: max-content;
+    justify-self: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(255, 193, 7, 0.8);
+    color: #ffffff;
+    font-style: italic;
+    border-radius: 5px;
+    border: 3px solid rgb(255, 193, 7);
+}
+.message {
+    width: max-content;
+    justify-self: center;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(6, 208, 1, 0.8);
+    color: #ffffff;
+    font-style: italic;
+    border-radius: 5px;
+    border: 3px solid rgb(6, 208, 1);
+}
+
+.message-container button {
+    background-color: crimson;
+    color: #ffffff;
+}
+
+.message-container button:hover {
+    background-color: rgb(145, 16, 42);
+}
+
+input {
+    padding: 5px 10px 5px 5px;
+    margin: 10px 0px 10px 0px; /* ALTO DERECHA ABAJO IZQUIERDA */
+    border: 2px #3572EF solid;
+    border-radius: 5px;
+    color: #000000;
+    width: 100%;
+}
+
+input:focus-within {
+    background-color: #3572EF;
+    color: #ffffff;
+}
+
+input[type="submit"] {
+    background-color: #3572EF;
+    color: #ffffff;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px #292929;
+    padding: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #292929;
+    box-shadow: 2px 2px 5px #ffffff;
+}
+::placeholder{
+    color: #000000;
+}
+
+.container_Login {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgb(53, 114, 239);
+    padding: 20px;
+    width: 50%;
+}
+
+.image_Login {
+    width: 50%;
+    align-self: center;
+}
+
+.login {
+    background-color: rgba(255, 255, 255, .79);
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: 50px;
+    text-align: center;
+}
+
+.login input[type="submit"] {
+    padding: 5px;
+}
+
+
+.login a {
+    margin-top: 15px;
+    color: #3572EF;
+    width: max-content;
+    align-self: center;
+}
+
+.login a:hover {
+    margin-top: 15px;
+    color: #000FE0;
+}
+
+.form-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.User {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+}
+
+.User img {
+    padding-right: 5px;
+}
+
+.Copyright {
+    position: relative;
+    color: white;
+    font-style: italic;
+    left: 0px;
+    right: 0px;
+    bottom: 15px;
+    height: 15px;
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    align-self: center;
+}
+
+.conteiner-header-page {
+    position: sticky;
+    top: 10px;
+    width: 100%;
+}
+
+/* .user-name {
+    text-align: center;
+} */
+
+
+.navigation-bar {
+    display: flex;
+    align-items: center;
+    background-color: #A7E6FF;
+    border-radius: 15px;
+    width: 100%;
+    justify-content: space-between;
+    word-wrap: break-word;
+    overflow-x: scroll;
+
+}
+.user-options {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-right: 10px;
+
+}
+
+.user-options input {
+    background-color: #000FE0;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px #292929;
+
+}
+
+.user-options input:hover {
+    background-color: #000000;
+}
+
+
+.navigation-bar a {
+    text-decoration: none;
+    color: #292929;
+    padding: 10px;
+    text-align: center;
+    transition: .10;
+}
+
+.navigation-bar a:hover {
+    color: #000FE0;
+    filter: drop-shadow(0px 0px 5px #000FE0);
+    transform: translateY(-5px);
+}
+
+/* Seccion de datos del usuario */
+.container-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-data-user {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
+    width: max-content;
+    border: 2px solid #292929;
+    border-radius: 10%;
+    padding: 25px;
+}
+
+.image-file-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.data-user {
+    display: flex;
+    flex-direction: column;
+    /* ALTO DERECHA ABAJO IZQUIERDA */
+    padding: 0px 20px 0px 20px;
+}
+
+/* Seccion de Ayuda */
+.container-section-help {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-how-use {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 15px 5px 15px 5px;
+    border: 1px solid #292929;
+    padding: 15px;
+
+}
+
+.how-use {
+    width: 50%;
+    text-align: justify;
+    padding-right: 10px;
+}
+
+.container-how-use iframe {
+    width: 50%;
+}
+
+.container-questions {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 5px 15px 5px;
+    border: 1px solid #292929;
+    padding: 15px;
+    color: #000FE0;
+}
+
+.question {
+    margin-top: 10px;
+    text-align: justify;
+    padding: 5px;
+    width: auto;
+    box-shadow: 2px 2px 5px #292929;
+    background-color: #A7E6FF;
+    border-radius: 10px;
+    /* background-color: rgba(53, 114, 239, .5); */
+}
+
+.question-content {
+    display: none;
+    position: absolute;
+    overflow: auto;
+    padding: 5px;
+    border-radius: 10px;
+    color: #A7E6FF;
+    background-color: #000FE0;
+}
+
+.question:hover .question-content {
+    display: block;
+    position: relative;
+}
+
+/* Seccion Registrar Usuarios */
+.container-user-registrer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    text-align: center;
+}
+
+.user-registrer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-registrer{
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    padding-top: 0px;
+    /* backdrop-filter: blur(30px);
+    box-shadow: 0px 0px 30px rgba(227, 228, 237,0.37);
+    border: 2px solid rgba(255, 255, 255, 0.18); */
+}
+.user-registrer label{
+    text-align: start;
+}
+
+
+.users-table{
+    padding: 0px 20px 20px 20px;
+}
+.users-table table{
+    margin-bottom: 15px;
+}
+.users-table th, tr, td{
+    border: 2px solid #000FE0;
+    border-radius: 3px;
+    padding: 5px;
+}
+.users-table th, tr{
+    background-color: #A7E6FF;
+}
+
+/* Media queries */
+@media (min-width: 1024px) and (max-width: 1200px) {
+    body {
+        font-size: 1.2em;
+    }
+}
+@media (min-width: 320px) and (max-width: 480px) {
+    body {
+        font-size: 0.7em;
+    }
+
+    .container_Father {
+        flex-wrap: wrap;
+    }
+
+    .image-file-container {
+        width: 100%;
+    }
+
+    .image_Login {
+        width: 100%;
+        height: auto;
+    }
+
+    .container_Login {
+        width: 100%;
+    }
+    .navigation-bar{
+        font-size: 0.9em;
+        padding: 0px 0px 0px 0px;
+        align-items: center;
+        justify-content: start;
+
+    }
+    .navigation-bar a{
+        padding: 10px;
+    }
+    #logo{
+        height: auto;
+        width: 30px;
+    }   
+    #User-icon{
+        height: auto;
+        width: 30px;
+    }
+
+    .container-data-user img{
+        width: 90px;
+        height: 90px;
+    }
+    .user-options input {
+        font-size: 0.9em;
+        margin-right: 7px;
+        padding: 0px;
+    }
+
+    /* Seccion ayuda */
+    .container-how-use {
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .how-use {
+        width: 100%;
+    }
+
+    .container-how-use iframe {
+        width: 100%;
+    }
+    .users-table{
+        word-wrap: break-word;
+        overflow-x: scroll;
+    }
+
+}

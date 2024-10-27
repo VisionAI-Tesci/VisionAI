@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision AI - Login</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/Logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+</head>
+
+<body class="hidden">
+    <div class="loader" id="Hamster-loader">
+        <!-- From Uiverse.io by Nawsome -->
+        <div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+            <div class="wheel"></div>
+            <div class="hamster">
+                <div class="hamster__body">
+                    <div class="hamster__head">
+                        <div class="hamster__ear"></div>
+                        <div class="hamster__eye"></div>
+                        <div class="hamster__nose"></div>
+                    </div>
+                    <div class="hamster__limb hamster__limb--fr"></div>
+                    <div class="hamster__limb hamster__limb--fl"></div>
+                    <div class="hamster__limb hamster__limb--br"></div>
+                    <div class="hamster__limb hamster__limb--bl"></div>
+                    <div class="hamster__tail"></div>
+                </div>
+            </div>
+            <div class="spoke"></div>
+        </div>
+    </div>
+    <div class="container_Father">
+        <div class="container_Login">
+
+            {% block content %}
+                <div class="message-container">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            <div class="{{ category }}">
+                                <button type="button" id="closeNoti">&times;</button>
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            {% endblock %}
+
+            <form action="/Login_User" method="post" class="login">
+                <h1>Vision AI</h1>
+                <h3>Inteligencia Artificial para Videovigilancia</h3>
+
+                <div class="User">
+                    <img src="{{ url_for('static', filename = 'Images/usuario.png') }}" alt="Usuario" width="20"
+                        height="20">
+                    <input type="text" placeholder="Usuario" title="Ingrese su usuario" name="username" pattern="[a-zA-Z0-9]+" required  >
+                </div>
+
+                <div class="User">
+                    <img src="{{ url_for('static', filename = 'Images/cerrar.png') }}" alt="Contraseña" width="20"
+                        height="20">
+                    <input type="password" name="contraseña" placeholder="Contraseña" title="Ingrese su contraseña" required>
+                </div>
+                <input type="submit" value="Iniciar sesión">
+                <a href="{{ url_for('Seccion_Recuperar') }}">¿Olvidó su contraseña?</a>
+            </form>
+            
+            <footer class="Copyright">
+                <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+            </footer>
+        </div>
+        <img src="{{ url_for('static', filename = 'Images/Login_image.webp') }}" class="image_Login" alt="Seguridad">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="{{ url_for('static', filename = 'JavaScript/index.js') }}"></script>
+</body>
+
+</html>

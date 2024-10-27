@@ -1,0 +1,85 @@
+{% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
+{% block title %}Vision AI - Usuarios{% endblock %}
+
+{% block body %}
+<div style="text-align: center;"><h1>Registrar Usuarios</h1></div>
+<div class="hidden container-user-registrer">
+    
+    <div class="user-registrer">
+        <form class="form-registrer" action="/Register_User" method="post">
+            <h2>Datos del usuario</h2>
+
+            <label for="username">Username</label>
+            <input type="text" name="newusername" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+
+            <label for="name">Nombre</label>
+            <input type="text" name="newname" placeholder="Escribe aquí..." autocomplete="off" required value={{ data1 }}>
+
+            <label for="ap1">Apellido Paterno</label>
+            <input type="text" name="newap1" placeholder="Escribe aquí..." autocomplete="off" required value={{ data2 }}>
+
+            <label for="ap2">Apellido Materno</label>
+            <input type="text" name="newap2" placeholder="Escribe aquí..." autocomplete="off" required value= {{ data3 }}>
+
+            <label for="correo">Correo Electrónico</label>
+            <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
+
+            <label for="type">Tipo de Usuario</label>
+            <input type="text" list="type-users" title="Administrador o SuperUsuario" name="newtype"
+                placeholder="Escribe aquí..." autocomplete="off" required value= {{ data4 }}>
+            <datalist id="type-users">
+                <option value="Administrador"></option>
+                <option value="SuperUsuario"></option>
+            </datalist>
+
+            <label for="pass">Contraseña</label>
+            <input type="password" name="newpass" placeholder="Escribe aquí..." required>
+
+            <input type="submit" value="Registrar">
+        </form>
+    </div>
+
+    <div class="delete-user">
+        <h3>Usuarios registrados actualmente</h3>
+        <form action="/Delete_User" method="post">
+            <div class="users-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UserName</th>
+                            <th>Nombre</th>
+                            <th>Apellido 1</th>
+                            <th>Apellido 2</th>
+                            <th>Correo Eléctronico</th>
+                            <th>Tipo de usuario</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
+                            <tr>
+                                <td>{{ UserName }}</td>
+                                <td>{{ Nombre }}</td>
+                                <td>{{ Apellido_1 }}</td>
+                                <td>{{ Apellido_2 }}</td>
+                                <td>{{ Type_user }}</td>
+                                <td>{{ Email }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="conatiner-delete">
+                    <label for="user-to-delete">Usuario a eliminar</label>
+                    <input type="text" name="user-to-delete" placeholder="Escribe aquí..." autocomplete="off">
+                    <input type="submit" value="Eliminar">
+                </div>
+                
+            </div>
+        </form>
+    </div>
+</div>
+<footer class="hidden Copyright" style="color: black;">
+    <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+</footer>
+
+{% endblock %}
