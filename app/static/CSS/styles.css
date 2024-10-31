@@ -6,7 +6,8 @@ body {
 
 .hidden {
     display: none;
-    overflow: hidden;
+    overflow-y: hidden;
+    opacity: 0%;
 }
 
 .loader {
@@ -595,6 +596,27 @@ input[type="submit"]:hover {
     transform: translateY(-5px);
 }
 
+/* Sección Camara (Inicio) */
+.camera-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+.Camera{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #A7E6FF;
+    width: 650px;
+    height: 490px;
+    margin: 0px;
+    padding: 10px;
+}
+.people-detected{
+    width: 50%;
+    padding: 10px;
+}
 /* Seccion de datos del usuario */
 .container-user {
     display: flex;

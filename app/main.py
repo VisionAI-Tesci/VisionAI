@@ -1,5 +1,5 @@
 from flask import Flask, Response, render_template, request, session, redirect, url_for, flash
-import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets
+import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, Face_Recognition
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
@@ -17,7 +17,7 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,  # No permite que sean leidas por JS
     SESSION_COOKIE_SAMESITE='Lax',
 )
-
+face_rec = Face_Recognition.Face_Recognition_CCAI
 # Response.set_cookie('UserName', 'flask', secure=True, httponly=True, samesite='Lax')
 
 load_dotenv() #CARGAR VARIABLES DE ENTORNO
@@ -72,45 +72,6 @@ def SendFlatEmail(remitente, destinatario, mensaje, asunto):
 ######################################################################################################################################
 
 ######################################################################################################################################
-def ImageGenerate(newPerson):
-    dataPath = 'app\Personal_CCAI'
-    personPath = dataPath +'/'+ newPerson
-    
-    if not os.path.exists(personPath):
-        os.makedirs(personPath)
-        print("Carpeta creada")
-    cap = cv2.VideoCapture(0 + cv2.CAP_DSHOW)
-    cap.set(5, 30)
-    
-    detector_caras = cv2.CascadeClassifier('app/haarcascade_frontalface_default.xml')
-    countImages = 1
-    while True:
-        ret, frame = cap.read()
-        if ret == False:
-            break
-
-        frame = cv2.resize(frame, None, fx=0.8, fy=0.8, interpolation=cv2.INTER_CUBIC)
-        grayFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        auxFrame = frame.copy()
-        detecciones = detector_caras.detectMultiScale(grayFrame, scaleFactor=1.3, minNeighbors=7,minSize=(30, 30))
-
-        for (x, y, w, h) in detecciones:
-                cv2.rectangle(grayFrame, (x, y), (x+w, y+h), (255,0,0), 4)
-                rostro = auxFrame[y:y +h, x:x +w]
-                #rostro = cv2.resize(rostro, (720, 720), interpolation=cv2.INTER_CUBIC)
-                cv2.imwrite(personPath + f"/rostro {countImages}.jpg", rostro)
-                countImages +=1
-                print(f"imagen {countImages} creada.")
-
-        if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("z") or countImages >= 300:
-            break
-    
-    cap.release()
-    print(cap.isOpened())
-    cv2.destroyAllWindows()
-######################################################################################################################################
-
-######################################################################################################################################
 def Code_Generate():
     letras = string.ascii_letters
     numeros = string.digits
@@ -122,36 +83,6 @@ def Code_Generate():
     return password
 ######################################################################################################################################
 
-######################################################################################################################################
-def Proceso_de_Camara():
-    global camara
-    camara = cv2.VideoCapture(0+cv2.CAP_DSHOW)
-    camara.set(5,60)
-
-    while True:
-        ret, frameEspejo = camara.read()
-        detector_caras = cv2.CascadeClassifier('app/haarcascade_frontalface_default.xml') 
-        detecciones = detector_caras.detectMultiScale(frameEspejo, scaleFactor=1.2, minNeighbors=7,minSize=(30, 30))
-        resultadoFrame = frameEspejo
-
-        if ret == False:
-            break
-        else:
-            for (x, y, w, h) in detecciones:
-                cv2.rectangle(frameEspejo, (x, y), (x+w, y+h), (255,0,0), 4)
-                cv2.putText(frameEspejo, "Ing. Ernesto Ramirez Zuniga",(x, y-50), 2, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
-                cv2.putText(frameEspejo, "Docente PTC", (x, y-30),2, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
-                cv2.putText(frameEspejo, "Horario: 8:00 a 15:00",(x, y-10), 2, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
-
-            if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("z"):
-                break
-
-        suc, encode = cv2.imencode('.jpg', resultadoFrame)
-        resultadoFrame = encode.tobytes()
-        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + resultadoFrame + b'\r\n')
-
-    camara.release()
-    cv2.destroyAllWindows()
 ######################################################################################################################################
 
 # Ruta principal
@@ -204,17 +135,6 @@ def btn_Login():
 #función LOG OUT (INICIO DE SESIÓN)
 @app.route("/Log_Out", methods=["GET"])
 def Log_Out():
-    if camara != None:
-        camara.release()
-        cv2.destroyAllWindows()
-        print("Camara cerrada")
-    elif session.get["userName"] == None:
-        camara.release()
-        cv2.destroyAllWindows()
-        print("Camara cerrada por falta de usuario")
-    else:
-        print("No se activo la camara")
-
     session.pop("userName", None)
     session.pop("userNombre", None)
     session.pop("userAp1", None)
@@ -467,7 +387,7 @@ def Seccion_Registrar():
 
     return redirect(url_for("index"))
 
-#Funci[on Eliminar Usuario]
+#Función Eliminar Usuario]
 @app.route("/Delete_User", methods=["POST"])
 def Delete_User():
     User = request.form["user-to-delete"]
@@ -485,7 +405,6 @@ def Delete_User():
                 else:
                     flash(f"El usuario {User} no existe en el sistema.","error")
                 cur.close()
-
     except Exception as error:
         print("ERROR ", error)
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
@@ -539,8 +458,8 @@ def Register_User():
 #Función ACTIVAR CÁMARA
 @app.route('/Camera_Activate')
 def Camera_Activate():
-    return Response(Proceso_de_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(face_rec.process_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    #app.run(port=5000, debug=True)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(port=5000, debug=True)
+    #app.run(host='0.0.0.0', port=5000, debug=True)
