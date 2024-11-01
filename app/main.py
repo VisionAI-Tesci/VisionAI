@@ -1,10 +1,12 @@
 from flask import Flask, Response, render_template, request, session, redirect, url_for, flash
-import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, Face_Recognition
+import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, face_recognition, pickle
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.message import EmailMessage
+import faceRecognition
+import datetime as dt
 
 # Response.headers['Strict-Transport-Security'] = 'max-age=31536000;' #Convierte las peticiones de http a https
 # Response.headers['X-Content-Type-Options'] = 'nosniff' #no se deben cambiar ni seguir el contenido de Content-Type.
@@ -15,9 +17,8 @@ app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_SECURE=True,  # Limita las cookies a solo el trafico por https
     SESSION_COOKIE_HTTPONLY=True,  # No permite que sean leidas por JS
-    SESSION_COOKIE_SAMESITE='Lax',
-)
-face_rec = Face_Recognition.Face_Recognition_CCAI
+    SESSION_COOKIE_SAMESITE='Lax')
+
 # Response.set_cookie('UserName', 'flask', secure=True, httponly=True, samesite='Lax')
 
 load_dotenv() #CARGAR VARIABLES DE ENTORNO
@@ -30,12 +31,10 @@ app.config["MYSQL_DB"] = os.getenv('MY_DB')
 app.secret_key = secrets.token_urlsafe(32)  
 MySqlDB = MySQL(app)
 #rutaCam = "http://192.168.1.156:8080"
-
+face_rec = faceRecognition
 ######################################################################################################################################
 def SendEmail(remitente, destinatario, asunto, rutaEmail):
-
     msg = MIMEMultipart()
-
     msg['Subject'] = asunto
     msg['From'] = remitente
     msg['To'] = destinatario
@@ -44,19 +43,17 @@ def SendEmail(remitente, destinatario, asunto, rutaEmail):
         html = archivo.read()
 
     msg.attach(MIMEText(html, 'html', 'utf-8'))
-
     server = smtplib.SMTP(os.getenv('SMPT_SSL'), 587)
     server.starttls()
     server.login(remitente, os.getenv('MY_PASSWORD_EMAIL'))
-
     server.sendmail(remitente, destinatario, msg.as_string())
-
     server.quit()
 
 ######################################################################################################################################
 
 ######################################################################################################################################
 def SendFlatEmail(remitente, destinatario, mensaje, asunto):
+
     email = EmailMessage()
     email['Subject'] = asunto
     email['From'] = remitente
@@ -65,9 +62,7 @@ def SendFlatEmail(remitente, destinatario, mensaje, asunto):
 
     flatServer = smtplib.SMTP_SSL(os.getenv('SMPT_SSL'))
     flatServer.login(remitente, os.getenv('MY_PASSWORD_EMAIL'))
-
     flatServer.sendmail(remitente, destinatario, email.as_string())
-
     flatServer.quit()
 ######################################################################################################################################
 
@@ -135,6 +130,10 @@ def btn_Login():
 #función LOG OUT (INICIO DE SESIÓN)
 @app.route("/Log_Out", methods=["GET"])
 def Log_Out():
+    face_rec.camara.release()
+    face_rec.saveVideo.release()
+    face_rec.cv2.destroyAllWindows()
+
     session.pop("userName", None)
     session.pop("userNombre", None)
     session.pop("userAp1", None)
@@ -458,7 +457,7 @@ def Register_User():
 #Función ACTIVAR CÁMARA
 @app.route('/Camera_Activate')
 def Camera_Activate():
-    return Response(face_rec.process_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(face_rec.process_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
