@@ -1,0 +1,92 @@
+{% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
+{% block title %}Vision AI - Personal CCAI{% endblock %}
+{% block body %}
+    <div style="text-align: center;">
+        <h1>Personal del edificio CCAI</h1>
+    </div>
+    <div class="container-personal-registrer">
+        <div class="personal-registrer">
+
+            <form class="form-personal-registrer" action="/Register_PersonCCAI" method="post">
+                <h2 style="text-align: start;">Registrar Personal CCAI</h2>
+                <section class="full-personal-name">
+
+                    <div class="personal-name">
+                        <label for="newPersonName">Nombre</label>
+                        <input type="text" name="newPersonName" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
+
+                    <div class="personal-name">
+                        <label for="newPersonAp1">Apellido Paterno</label>
+                        <input type="text" name="newPersonAp1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
+
+                    <div class="personal-name">
+                        <label for="newPersonAp2">Apellido Materno</label>
+                        <input type="text" name="newPersonAp2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
+                </section>
+
+                <section class="full-data-job">
+                    <div class="data-job">
+                        <label for="newJobPerson">Puesto</label>
+                        <input type="text" name="newJobPerson" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
+
+                    <div class="data-job">
+                        <label for="newSHPerson">Hora de entrada <sup>(24h)</sup></label> 
+                        <input type="text" name="newSHPerson" pattern="^[0-9]+$" title="Solo se permiten números" placeholder="Escribe aquí..."maxlength="2" autocomplete="off" required>
+                    </div>
+
+                    <div class="data-job">
+                        <label for="newEHPerson">Hora de salida <sup>(24h)</sup></label> 
+                        <input type="text" name="newEHPerson" pattern="^[0-9]+$" title="Solo se permiten números" placeholder="Escribe aquí..." maxlength="2" autocomplete="off" required>
+                    </div>
+
+                </section>
+                
+                <input type="submit" value="Registrar">
+            </form>
+        </div>
+
+        <div class="all-personalCCAI">
+            {% for person_id, D1, D2, D3, D4, D5, D6 in PersonsCCAI %}
+                <div class="person">
+                    <figure class="buttons-and-img">
+                        <img src="{{ url_for('static', filename = 'Images/perfil.webp') }}" alt="Usuario" width="150" height="150">
+                        <form action=""><input type="submit" value="Actualizar"></form>
+
+                        <form action="/Delete_PersonCCAI" method="post" onsubmit="return Confirm_Delete_Funtion()">
+                            <input type="submit" value="Eliminar" id="DeletePerson">
+                            <input type="hidden" name="person_id" value="{{ person_id }}">
+                        </form>
+
+                        <form action=""><input type="submit" value="Tomar fotos" id="FaceCam"></form>
+                    </figure>
+                    <form class="all-personal-data" action="" method="post">
+                        <label for="NamePersonCCAI">Nombre</label>
+                        <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">
+
+                        <label for="Ap1PersonalCCAI">Apellido Paterno</label>
+                        <input type="text" id="Ap1PersonalCCAI" name="Ap1PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ D2 }}">
+
+                        <label for="Ap2PersonalCCAI">Apellido Materno</label>
+                        <input type="text" name="Ap2PersonalCCAI" id="Ap2PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D3 }}">
+
+                        <label for="JobPersonCCAI">Puesto</label>
+                        <input type="text" name="JobPersonCCAI" id="JobPersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D4 }}">
+
+                        <label for="SHPersonCCAI">Horario de entrada <sup>(24h)</sup></label>
+                        <input type="text" name="SHPersonCCAI" id="SHPersonCCAI" pattern="^[0-9]+$" title="Solo se permiten números" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D5 }}">
+
+                        <label for="EHPersonCCAI">Horario de salida <sup>(24h)</sup></label>
+                        <input type="text" name="EHPersonCCAI" id="EHPersonCCAI" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D6 }}">
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer class="hidden Copyright" style="color: black;">
+        <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+    </footer>
+{% endblock %}

@@ -436,17 +436,13 @@ body {
 }
 
 input {
-    padding: 5px 10px 5px 5px;
+    box-sizing: border-box;
+    padding: 5px;
     margin: 10px 0px 10px 0px; /* ALTO DERECHA ABAJO IZQUIERDA */
     border: 2px #3572EF solid;
     border-radius: 5px;
     color: #000000;
     width: 100%;
-}
-
-input:focus-within {
-    background-color: #3572EF;
-    color: #ffffff;
 }
 
 input[type="submit"] {
@@ -462,9 +458,6 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #292929;
     box-shadow: 2px 2px 5px #ffffff;
-}
-::placeholder{
-    color: #000000;
 }
 
 .container_Login {
@@ -743,7 +736,6 @@ input[type="submit"]:hover {
     text-align: start;
 }
 
-
 .users-table{
     padding: 0px 20px 20px 20px;
 }
@@ -758,7 +750,79 @@ input[type="submit"]:hover {
 .users-table th, tr{
     background-color: #A7E6FF;
 }
+.container-personal-registrer{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.personal-registrer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.full-personal-name, .full-data-job{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.personal-name, .data-job{
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+}
+.form-personal-registrer{
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    padding-top: 0px;
+    justify-content: center;
+    align-items: center;
+}
 
+.all-personalCCAI{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin-top: 10px ;
+    padding-top: 0px;
+    justify-content: center;
+    align-items: center;
+}
+.person{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 5px;
+}
+.all-personal-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.buttons-and-img{
+    margin: 20px;
+}
+#DeletePerson{
+    background-color: crimson;
+}
+#DeletePerson:hover, #FaceCam:hover {
+    background-color: #292929;
+    box-shadow: 2px 2px 5px #ffffff;
+}
+#FaceCam{
+    background-color: #06D001;
+}
 /* Media queries */
 @media (min-width: 1024px) and (max-width: 1200px) {
     body {

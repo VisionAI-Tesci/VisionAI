@@ -11,6 +11,7 @@ window.onload = function () {
     $('.container-user').removeClass('hidden');
 }
 
+// Funciones de confirmar acciones
 $(document).ready(function () {
     $("button#closeNoti").click(function () {
         $(this).closest(".error").addClass("hidden");
@@ -19,3 +20,11 @@ $(document).ready(function () {
         $(this).closest(".message").addClass("hidden");
     });
 });
+
+function Confirm_Delete_Funtion(){
+    return confirm("¿Eliminar usuario?")
+}
+
+function Confirm_Update_Funtion(){
+    return confirm("¿Actualizar datos del usuario?")
+}

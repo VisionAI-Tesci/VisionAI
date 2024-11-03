@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.message import EmailMessage
+import ModeloDlib as MDlib
 import faceRecognition
 import datetime as dt
 
@@ -130,9 +131,9 @@ def btn_Login():
 #función LOG OUT (INICIO DE SESIÓN)
 @app.route("/Log_Out", methods=["GET"])
 def Log_Out():
-    face_rec.camara.release()
-    face_rec.saveVideo.release()
-    face_rec.cv2.destroyAllWindows()
+    # face_rec.camara.release()
+    # face_rec.saveVideo.release()
+    # face_rec.cv2.destroyAllWindows()
 
     session.pop("userName", None)
     session.pop("userNombre", None)
@@ -159,6 +160,35 @@ def Seccion_Camara():
 
     return redirect(url_for("index"))        
 
+#Seccion PERSONAL CCAI
+@app.route("/Seccion_PersonalCCAI")
+def Seccion_PersonalCCAI():
+    try:
+        if 'userName' in session:
+            cur = MySqlDB.connection.cursor()
+            cur.execute("SELECT * FROM personalccai")
+            all_PersonsCCAI = cur.fetchall()
+
+            if all_PersonsCCAI != None:
+                tam = len(all_PersonsCCAI)
+                print(all_PersonsCCAI)
+                print(tam)
+                if 'is_Admin' in session:
+                    return render_template("Seccion_PersonalCCAI.html",Size=tam, PersonsCCAI=all_PersonsCCAI, Admin=session.get("is_Admin"))
+                elif 'is_Super' in session:
+                    return render_template("Seccion_PersonalCCAI.html",Size=tam,PersonsCCAI=all_PersonsCCAI, Super=session.get("is_Super"))
+                else:
+                    flash('No se pudo asignar un tipo de usuario', 'error')
+                cur.close()
+
+        else:
+            flash('No se ha iniciado sesión', 'error')
+            return redirect(url_for("index"))
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+
+    return redirect(url_for("index"))        
 #SECCIÓN RECUPERAR CONTRASEÑA
 @app.route("/Seccion_Recuperar")
 def Seccion_Recuperar():
@@ -443,7 +473,7 @@ def Register_User():
                     flash(f"Se registro el usuario {newUserName} con éxito.","info")
                 else:
                     flash("El usuario o correo electrónico ya estan en uso.","error")
-                    return render_template("Seccion_Registrar_USer.html",data1 = newName, data2 = newAp1, data3 = newAp2, data4 = newType, Super = session.get("is_Super"))
+                    return render_template("Seccion_Registrar_User.html",data1 = newName, data2 = newAp1, data3 = newAp2, data4 = newType, Super = session.get("is_Super"))
 
             else:
                     flash("El usuario o correo electrónico ya estan en uso.","error")
@@ -453,11 +483,71 @@ def Register_User():
 
     return redirect(url_for("Seccion_Registrar"))
 
+#Funcion Registrar Personal del CCAI
+@app.route("/Register_PersonCCAI", methods=["POST"])
+def Register_PersonCCAI():
+    try:
+        newPersonName = request.form["newPersonName"].lower().capitalize()
+        newPersonAp1 = request.form["newPersonAp1"].lower().capitalize()
+        newPersonAp2 = request.form["newPersonAp2"].lower().capitalize()
+        newJobPerson = request.form["newJobPerson"].lower().capitalize()
+        newSHPerson = int(request.form["newSHPerson"])
+        newEHPerson = int(request.form["newEHPerson"])
+
+        if request.method == "POST":
+            if all([newPersonName and newPersonAp1 and newPersonAp2 and newJobPerson and newSHPerson and newEHPerson]):
+                cur = MySqlDB.connection.cursor()
+                cur.execute("SELECT * FROM personalccai WHERE ID != (SELECT ID FROM personalccai WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s) AND Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s", (newPersonName, newPersonAp1, newPersonAp2, newPersonName, newPersonAp1, newPersonAp2))
+                sql_Value = cur.fetchone()
+
+                if sql_Value is None: #SI ES NONE NO ESTA EN LOS REGISTROS 
+                    cur.execute("INSERT INTO personalccai (Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal) VALUES (%s, %s, %s, %s, %s, %s)",(newPersonName, newPersonAp1, newPersonAp2, newJobPerson, newSHPerson, newEHPerson))
+                    MySqlDB.connection.commit()
+                    cur.close()
+                    flash(f"Se registro la persona {newPersonName, newPersonAp1, newPersonAp2} con éxito.","info")
+                else:
+                    flash("Ya existe una persona con los mismo datos.","error")
+            else:
+                    flash("No estan llenos todos los campos","warning")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_PersonalCCAI"))
+
+#Función ELIMINAR PERSONA DEL CCAI
+@app.route('/Delete_PersonCCAI', methods = ["POST"])
+def Delete_PersonCCAI():
+    try:
+        id_PersonCCAI = request.form["person_id"]
+
+        if request.method == "POST":
+            if id_PersonCCAI != "":
+                cur = MySqlDB.connection.cursor()
+                cur.execute("DELETE FROM personalccai WHERE ID = %s", (id_PersonCCAI,))
+                MySqlDB.connection.commit()
+                cur.close() 
+
+                flash(f"Se elimino con éxito.","info")
+            else:
+                flash("No estan llenos todos los campos","warning")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_PersonalCCAI"))
 
 #Función ACTIVAR CÁMARA
 @app.route('/Camera_Activate')
 def Camera_Activate():
         return Response(face_rec.process_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+#Función Tomar fotos de rostros
+@app.route('/Face_Photos_Capture')
+def Face_Photos_Capture():
+        return Response(MDlib.Face_Capture(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

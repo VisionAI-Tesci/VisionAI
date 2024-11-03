@@ -10,22 +10,22 @@
             <h2>Datos del usuario</h2>
 
             <label for="username">Username</label>
-            <input type="text" name="newusername" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+            <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
 
             <label for="name">Nombre</label>
-            <input type="text" name="newname" placeholder="Escribe aquí..." autocomplete="off" required value={{ data1 }}>
+            <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value={{ data1 }}>
 
             <label for="ap1">Apellido Paterno</label>
-            <input type="text" name="newap1" placeholder="Escribe aquí..." autocomplete="off" required value={{ data2 }}>
+            <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value={{ data2 }}>
 
             <label for="ap2">Apellido Materno</label>
-            <input type="text" name="newap2" placeholder="Escribe aquí..." autocomplete="off" required value= {{ data3 }}>
+            <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value= {{ data3 }}>
 
             <label for="correo">Correo Electrónico</label>
             <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
 
             <label for="type">Tipo de Usuario</label>
-            <input type="text" list="type-users" title="Administrador o SuperUsuario" name="newtype"
+            <input type="text" list="type-users" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" name="newtype"
                 placeholder="Escribe aquí..." autocomplete="off" required value= {{ data4 }}>
             <datalist id="type-users">
                 <option value="Administrador"></option>
