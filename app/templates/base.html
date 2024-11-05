@@ -39,13 +39,13 @@
             <a href="{{ url_for('Seccion_Camara') }}">Inicio</a>
             <a href="#asd">Detecciones</a>
             <a href="#asd">Alertas</a>
-            <a href="#sa">Personal CCAI</a>
+            <a href="{{ url_for('Seccion_PersonalCCAI') }}">Personal CCAI</a>
             <a href="{{ url_for('Seccion_Ayuda') }}">Ayuda</a>
             <div class="user-options">
                 <a href="{{ url_for('Seccion_Usuario') }}"><img
                         src="{{ url_for('static', filename = 'Images/usuario-de-perfil.webp') }}" alt="Usuario"
                         width="40" height="40" id="User-icon"></a>
-                <form action="/Log_Out" method="get">
+                <form action="/Log_Out" method="get" onsubmit="return Confirm_LogOut_Funtion()">
                     <input type="submit" value="Log out">
                 </form>
             </div>

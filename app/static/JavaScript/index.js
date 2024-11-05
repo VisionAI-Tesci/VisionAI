@@ -28,3 +28,11 @@ function Confirm_Delete_Funtion(){
 function Confirm_Update_Funtion(){
     return confirm("¿Actualizar datos del usuario?")
 }
+
+function Confirm_LogOut_Funtion(){
+    return confirm("¿Cerrar sesión?")
+}
+
+function Confirm_UpPasword_Funtion(){
+    return confirm("Actualizar contraseña?")
+}

@@ -54,7 +54,6 @@
                 <div class="person">
                     <figure class="buttons-and-img">
                         <img src="{{ url_for('static', filename = 'Images/perfil.webp') }}" alt="Usuario" width="150" height="150">
-                        <form action=""><input type="submit" value="Actualizar"></form>
 
                         <form action="/Delete_PersonCCAI" method="post" onsubmit="return Confirm_Delete_Funtion()">
                             <input type="submit" value="Eliminar" id="DeletePerson">
@@ -63,24 +62,27 @@
 
                         <form action=""><input type="submit" value="Tomar fotos" id="FaceCam"></form>
                     </figure>
-                    <form class="all-personal-data" action="" method="post">
+
+                    <form class="all-personal-data" action="/Change_Data_Person" method="post">
+                        <input type="hidden" name="person_id" value="{{ person_id }}" readonly>
                         <label for="NamePersonCCAI">Nombre</label>
-                        <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">
+                        <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">
 
                         <label for="Ap1PersonalCCAI">Apellido Paterno</label>
-                        <input type="text" id="Ap1PersonalCCAI" name="Ap1PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ D2 }}">
+                        <input type="text" id="Ap1PersonalCCAI" name="Ap1PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ D2 }}">
 
                         <label for="Ap2PersonalCCAI">Apellido Materno</label>
-                        <input type="text" name="Ap2PersonalCCAI" id="Ap2PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D3 }}">
+                        <input type="text" name="Ap2PersonalCCAI" id="Ap2PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D3 }}">
 
                         <label for="JobPersonCCAI">Puesto</label>
-                        <input type="text" name="JobPersonCCAI" id="JobPersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D4 }}">
+                        <input type="text" name="JobPersonCCAI" id="JobPersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D4 }}">
 
                         <label for="SHPersonCCAI">Horario de entrada <sup>(24h)</sup></label>
-                        <input type="text" name="SHPersonCCAI" id="SHPersonCCAI" pattern="^[0-9]+$" title="Solo se permiten números" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D5 }}">
+                        <input type="text" name="SHPersonCCAI" id="SHPersonCCAI" pattern="^[0-9]+$" title="Solo se permiten números" required autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ D5 }}">
 
                         <label for="EHPersonCCAI">Horario de salida <sup>(24h)</sup></label>
-                        <input type="text" name="EHPersonCCAI" id="EHPersonCCAI" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D6 }}">
+                        <input type="text" name="EHPersonCCAI" id="EHPersonCCAI" required autocomplete="off" placeholder="Escribe aquí..."maxlength="2"value= "{{ D6 }}">
+                        <input type="submit" value="Actualizar">
                     </form>
                 </div>
             {% endfor %}

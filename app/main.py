@@ -33,6 +33,7 @@ app.secret_key = secrets.token_urlsafe(32)
 MySqlDB = MySQL(app)
 #rutaCam = "http://192.168.1.156:8080"
 face_rec = faceRecognition
+
 ######################################################################################################################################
 def SendEmail(remitente, destinatario, asunto, rutaEmail):
     msg = MIMEMultipart()
@@ -52,7 +53,6 @@ def SendEmail(remitente, destinatario, asunto, rutaEmail):
 
 ######################################################################################################################################
 
-######################################################################################################################################
 def SendFlatEmail(remitente, destinatario, mensaje, asunto):
 
     email = EmailMessage()
@@ -67,7 +67,6 @@ def SendFlatEmail(remitente, destinatario, mensaje, asunto):
     flatServer.quit()
 ######################################################################################################################################
 
-######################################################################################################################################
 def Code_Generate():
     letras = string.ascii_letters
     numeros = string.digits
@@ -77,8 +76,6 @@ def Code_Generate():
     for i in range(psw_tam):
         password += ''.join(secrets.choice(Alfabeto)).upper()
     return password
-######################################################################################################################################
-
 ######################################################################################################################################
 
 # Ruta principal
@@ -275,7 +272,7 @@ def Update_Password():
         flash(f"HA OCURRIDO UN ERROR: {str(error)}", 'error')
 
 
-    return redirect(url_for("Seccion_Pass"))
+    return redirect(url_for("index"))
 
 #SECCIÓN USUARIO
 @app.route("/Seccion_Pass")
@@ -497,7 +494,7 @@ def Register_PersonCCAI():
         if request.method == "POST":
             if all([newPersonName and newPersonAp1 and newPersonAp2 and newJobPerson and newSHPerson and newEHPerson]):
                 cur = MySqlDB.connection.cursor()
-                cur.execute("SELECT * FROM personalccai WHERE ID != (SELECT ID FROM personalccai WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s) AND Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s", (newPersonName, newPersonAp1, newPersonAp2, newPersonName, newPersonAp1, newPersonAp2))
+                cur.execute("SELECT * FROM personalccai WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s", (newPersonName, newPersonAp1, newPersonAp2))
                 sql_Value = cur.fetchone()
 
                 if sql_Value is None: #SI ES NONE NO ESTA EN LOS REGISTROS 
@@ -506,9 +503,9 @@ def Register_PersonCCAI():
                     cur.close()
                     flash(f"Se registro la persona {newPersonName, newPersonAp1, newPersonAp2} con éxito.","info")
                 else:
-                    flash("Ya existe una persona con los mismo datos.","error")
+                    flash("Ya existe una persona con el mismo nombre.","error")
             else:
-                    flash("No estan llenos todos los campos","warning")
+                flash("No estan llenos todos los campos","warning")
 
     except Exception as error:
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
@@ -532,6 +529,45 @@ def Delete_PersonCCAI():
                 flash(f"Se elimino con éxito.","info")
             else:
                 flash("No estan llenos todos los campos","warning")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_PersonalCCAI"))
+
+#Función ACtualizar Personal del CCAI
+@app.route("/Change_Data_Person", methods=["POST"])
+def Change_Data_Person():
+    try:
+        if request.method == "POST":
+            if 'userName' in session:
+                IDPerson = request.form["person_id"]
+                upPersonName = request.form["NamePersonCCAI"].lower().capitalize()
+                upPersonAp1 = request.form["Ap1PersonalCCAI"].lower().capitalize()
+                upPersonAp2 = request.form["Ap2PersonalCCAI"].lower().capitalize()
+                upJobPerson = request.form["JobPersonCCAI"].lower().capitalize()
+                upSHPerson = int(request.form["SHPersonCCAI"])
+                upEHPerson = int(request.form["EHPersonCCAI"])
+
+                if all([upPersonName and upPersonAp1 and upPersonAp2 and upJobPerson and upSHPerson and upEHPerson]):
+                    cur = MySqlDB.connection.cursor()
+                    cur.execute("SELECT Nombre, Apellido_1, Apellido_2 FROM personalccai WHERE ID = %s", (IDPerson,))
+                    sql_Value = cur.fetchone()
+
+                    if sql_Value != None: #No existe si es none
+                        cur.execute("UPDATE personalccai SET Nombre = %s, Apellido_1 = %s, Apellido_2 = %s, Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s OR ID = %s",(upPersonName, upPersonAp1, upPersonAp2, upJobPerson, upSHPerson, upEHPerson, upPersonName, upPersonAp1, upPersonAp2, IDPerson))
+                        MySqlDB.connection.commit()
+                        flash(f"Los datos de {upPersonName, upPersonAp1} fueron actualizados.","info")
+                    # else:
+                    #     dbPersonName, dbPersonAp1, dbPersonAp2 = sql_Value
+                    #     if upPersonName == dbPersonName and upPersonAp1 == dbPersonAp1 and upPersonAp2 == dbPersonAp2:
+                    #         cur.execute("UPDATE personalccai SET Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE ID = %s",(upJobPerson, upSHPerson, upEHPerson, IDPerson))
+                    #         MySqlDB.connection.commit()
+                    #         flash(f"Los demás datos de la persona fueron actualizados.","info")
+                    cur.close()
+                else:
+                    flash("No estan llenos todos los campos","warning")
 
     except Exception as error:
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
