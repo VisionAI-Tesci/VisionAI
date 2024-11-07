@@ -1,4 +1,4 @@
-window.onload = function () {
+$(document).ready(function() {
     //alert("Cargado")
     $('#Hamster-loader').fadeOut();
     $('body').removeClass('hidden');
@@ -9,10 +9,11 @@ window.onload = function () {
     $('.container-section-help').removeClass('hidden');
     $('.container-user-registrer').removeClass('hidden');
     $('.container-user').removeClass('hidden');
-}
+    $('body').css("overflow","visible");
+});
 
 // Funciones de confirmar acciones
-$(document).ready(function () {
+$(document).ready(function() {
     $("button#closeNoti").click(function () {
         $(this).closest(".error").addClass("hidden");
         $(this).closest(".info").addClass("hidden");

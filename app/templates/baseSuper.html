@@ -40,8 +40,8 @@
             <a href="#asd">Detecciones</a>
             <a href="#asd">Alertas</a>
             <a href="{{ url_for('Seccion_PersonalCCAI') }}">Personal CCAI</a>
-            <a href="{{ url_for('Seccion_Ayuda') }}">Ayuda</a>
             <a href="{{ url_for('Seccion_Registrar') }}">Usuarios</a>
+            <a href="{{ url_for('Seccion_Ayuda') }}">Ayuda</a>
             <!-- <a href="{{ url_for('Seccion_Recuperar') }}">Cambiar contraseñas</a> -->
             <div class="user-options">
                 <a href="{{ url_for('Seccion_Usuario') }}"><img src="{{ url_for('static', filename = 'Images/usuario-de-perfil.webp') }}" alt="Usuario" width="40" height="40" id="User-icon"></a>
@@ -70,8 +70,10 @@
 
     {% endblock %}
 
+    {% block scripts %}
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="{{ url_for('static', filename = 'JavaScript/index.js') }}"></script>
+    {% endblock %}
 </body>
 
 </html>

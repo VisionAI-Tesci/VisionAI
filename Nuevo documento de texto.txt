@@ -1,0 +1,38 @@
+    <!-- <div class="delete-user">
+        <h3>Usuarios registrados actualmente</h3>
+        <form action="/Delete_User" method="post">
+            <div class="users-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UserName</th>
+                            <th>Nombre</th>
+                            <th>Apellido 1</th>
+                            <th>Apellido 2</th>
+                            <th>Correo Eléctronico</th>
+                            <th>Tipo de usuario</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
+                            <tr>
+                                <td>{{ UserName }}</td>
+                                <td>{{ Nombre }}</td>
+                                <td>{{ Apellido_1 }}</td>
+                                <td>{{ Apellido_2 }}</td>
+                                <td>{{ Type_user }}</td>
+                                <td>{{ Email }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="conatiner-delete">
+                    <label for="user-to-delete">Usuario a eliminar</label>
+                    <input type="text" name="user-to-delete" placeholder="Escribe aquí..." autocomplete="off">
+                    <input type="submit" value="Eliminar">
+                </div>
+                
+            </div>
+        </form>
+    </div> -->

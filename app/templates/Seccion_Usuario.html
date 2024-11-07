@@ -3,31 +3,31 @@
 {% block body %}
 
 <div class="hidden container-user">
-    <h1 style="text-align: center;">Datos Del Usuario</h1>
+    <h1 style="text-align: center;">Datos del Usuario</h1>
     <div class="container-data-user">
         <!-- <form class="image-file-container" action="/Change_data_user" method="get"> -->
-            <img src="{{ url_for('static', filename = 'Images/perfil.webp') }}" alt="Usuario" width="150" height="150">
+            <img src="{{ url_for('static', filename = 'Images/perfiles-de-usuario.webp') }}" alt="Usuario" width="150" height="150">
             <!-- <label for="image-file">Subir imagen:</label> -->
             <!-- <input type="file" accept="image/png,image/jpeg" id="image-file" name="image-file">
         </form> -->
 
         <form class="data-user" action="/Change_data_user" method="post" onsubmit="return Confirm_Update_Funtion()">
-            <h2>Perfíl</h2>
+            <h2>Editar Perfíl</h2>
 
             <label for="username">Nombre de Usuario</label>
-            <input type="text" name="username" id="username" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" required autocomplete="off" placeholder="Escribe aquí..." value= {{ User }}>
+            <input type="text" name="username" id="username" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ User }}">
 
             <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= {{ name }}>
+            <input type="text" id="name" name="name" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ name }}">
 
             <label for="ap1">Apellido Paterno</label>
-            <input type="text" id="ap1" name="ap1"pattern= "^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= {{ ap_1 }}>
+            <input type="text" id="ap1" name="ap1"pattern= "^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ ap_1 }}">
 
             <label for="ap2">Apellido Materno</label>
-            <input type="text" name="ap2" id="ap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= {{ ap_2 }}>
+            <input type="text" name="ap2" id="ap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ ap_2 }}">
 
             <label for="correo">Correo electrónico</label>
-            <input type="email" name="correo" id="correo" required autocomplete="off" placeholder="Escribe aquí..." value= {{ Correo }}>
+            <input type="email" name="correo" id="correo" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ Correo }}">
             <input type="submit" value="Actualizar datos">
         <form>
     </div>

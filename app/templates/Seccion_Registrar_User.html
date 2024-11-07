@@ -1,85 +1,97 @@
 {% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
 {% block title %}Vision AI - Usuarios{% endblock %}
-
 {% block body %}
-<div style="text-align: center;"><h1>Registrar Usuarios</h1></div>
 <div class="hidden container-user-registrer">
-    
+    <div style="text-align: center;"><h1>Usuarios de Vision AI</h1></div>
     <div class="user-registrer">
         <form class="form-registrer" action="/Register_User" method="post">
-            <h2>Datos del usuario</h2>
+            <h2 style="text-align: center;">Registrar Usuario</h2>
 
-            <label for="username">Username</label>
-            <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+            <section class="full-personal-name">
+                <div class="personal-name">
+                    <label for="username">Username</label>
+                    <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+                </div>
 
-            <label for="name">Nombre</label>
-            <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value={{ data1 }}>
+                <div class="personal-name">
+                    <label for="name">Nombre</label>
+                    <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                </div>
 
-            <label for="ap1">Apellido Paterno</label>
-            <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value={{ data2 }}>
+                <div class="personal-name">
+                    <label for="ap1">Apellido Paterno</label>
+                    <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                </div>
 
-            <label for="ap2">Apellido Materno</label>
-            <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required value= {{ data3 }}>
+                <div class="personal-name">
+                    <label for="ap2">Apellido Materno</label>
+                    <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                </div>
+            </section>
 
-            <label for="correo">Correo Electrónico</label>
-            <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
+            <section class="full-personal-name">
+                <div class="personal-name">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
+                </div>
 
-            <label for="type">Tipo de Usuario</label>
-            <input type="text" list="type-users" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ]+$" title="Solo se permiten letras" name="newtype"
-                placeholder="Escribe aquí..." autocomplete="off" required value= {{ data4 }}>
-            <datalist id="type-users">
-                <option value="Administrador"></option>
-                <option value="SuperUsuario"></option>
-            </datalist>
+                <div class="personal-name">
+                    <label for="type">Tipo de Usuario</label>
+                    
+                <select name="newtype" id="type" required>
+                    <option value="" disabled selected>Selecciona una opción</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="SuperUsuario">SuperUsuario</option>
+                </select>
 
-            <label for="pass">Contraseña</label>
-            <input type="password" name="newpass" placeholder="Escribe aquí..." required>
+                </div>
+
+                <div class="personal-name">
+                    <label for="pass">Contraseña</label>
+                    <input type="password" name="newpass" placeholder="Escribe aquí..." required>
+                </div>
+            </section>
 
             <input type="submit" value="Registrar">
         </form>
     </div>
+    <h2>Usuarios Registrados Actualmente</h2>
 
-    <div class="delete-user">
-        <h3>Usuarios registrados actualmente</h3>
-        <form action="/Delete_User" method="post">
-            <div class="users-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>UserName</th>
-                            <th>Nombre</th>
-                            <th>Apellido 1</th>
-                            <th>Apellido 2</th>
-                            <th>Correo Eléctronico</th>
-                            <th>Tipo de usuario</th>
-                        </tr>
-                    </thead>
+        <div class="all-personalCCAI">
+            {% for ID, UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
+                <div class="person">
+                    <figure class="buttons-and-img">
+                        <img src="{{ url_for('static', filename = 'Images/user-Vision.webp') }}" alt="Usuario" width="150" height="150">
+                    </figure>
 
-                    <tbody>
-                        {% for UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
-                            <tr>
-                                <td>{{ UserName }}</td>
-                                <td>{{ Nombre }}</td>
-                                <td>{{ Apellido_1 }}</td>
-                                <td>{{ Apellido_2 }}</td>
-                                <td>{{ Type_user }}</td>
-                                <td>{{ Email }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <div class="conatiner-delete">
-                    <label for="user-to-delete">Usuario a eliminar</label>
-                    <input type="text" name="user-to-delete" placeholder="Escribe aquí..." autocomplete="off">
-                    <input type="submit" value="Eliminar">
+                    <form class="all-personal-data" action="/Delete_User" method="post" onsubmit="return Confirm_Delete_Funtion()">
+                        <input type="hidden" name="user_id" value="{{ ID }}" readonly required>
+
+                        <label for="username">Username</label>
+                        <input type="text" name="username" pattern="^[A-Za-z0-9_-]+$" readonly title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí" value="{{ UserName }}">
+
+                        <label for="Name-User">Nombre</label>
+                        <input type="text" name="Name-User" id="Name-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Nombre }}">
+
+                        <label for="Ap1-User">Apellido Paterno</label>
+                        <input type="text" id="Ap1-User" name="Ap1-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_1 }}">
+
+                        <label for="Ap2-User">Apellido Materno</label>
+                        <input type="text" name="Ap2-User" id="Ap2-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_2 }}">
+
+                        <label for="Email-User">Correo</label>
+                        <input type="text" name="Email-User" id="Email-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly autocomplete="off" placeholder="Escribe aquí..." value= "{{ Email }}">
+
+                        <label for="Type-User">Tipo de usuario</label>
+                        <input type="text" name="Type-User" id="Type-User" pattern="^[0-9]+$" readonly title="Solo se permiten números"  autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ Type_user }}">
+
+                        <input type="submit" value="Eliminar" id="DeletePerson">
+                    </form>
                 </div>
-                
-            </div>
-        </form>
-    </div>
+            {% endfor %}
+        </div>
 </div>
 <footer class="hidden Copyright" style="color: black;">
     <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
 </footer>
-
 {% endblock %}

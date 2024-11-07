@@ -413,12 +413,12 @@ def Seccion_Registrar():
 
         if'userName' in session and 'is_Super' in session:
             cur = MySqlDB.connection.cursor()
-            cur.execute("SELECT UserName, Nombre, Apellido_1, Apellido_2, Type_User, Email  FROM users")
+            cur.execute("SELECT ID_User, UserName, Nombre, Apellido_1, Apellido_2, Email, Type_User FROM users")
             allUsers = cur.fetchall()
             cur.close()
             return render_template("Seccion_Registrar_User.html", Super = session.get("is_Super"), users = allUsers)
         else:
-            flash("Solo el Super Usurio puede acceder.", "warning")
+            flash("No se ha iniciado sesión", "error")
 
     except Exception as error:
         print(error)
@@ -429,21 +429,20 @@ def Seccion_Registrar():
 #Función Eliminar Usuario]
 @app.route("/Delete_User", methods=["POST"])
 def Delete_User():
-    User = request.form["user-to-delete"]
+    user_id = request.form["user_id"]
     try:
-        if request.method == "POST":
-            if User != "":
+        if request.method == "POST" and 'userName' in session:
+            if user_id != "":
                 cur = MySqlDB.connection.cursor()
-                cur.execute("SELECT UserName FROM users WHERE UserName = %s",(User,))
-                sql_Value = cur.fetchone()
-
-                if sql_Value !=None:
-                    cur.execute("DELETE FROM users WHERE UserName = %s", (User,))
-                    MySqlDB.connection.commit()
-                    flash(f"El usuario {User} se elimino del sistema.","info")
-                else:
-                    flash(f"El usuario {User} no existe en el sistema.","error")
+                cur.execute("DELETE FROM users WHERE ID_User = %s", (user_id,))
+                MySqlDB.connection.commit()
                 cur.close()
+                flash("El usuario se elimino del sistema.","info")
+            else:
+                flash("No se obtuvo la información del usuario.", "error")
+        else:
+            flash("No se ha iniciado sesión", "error")
+
     except Exception as error:
         print("ERROR ", error)
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
@@ -483,8 +482,6 @@ def Register_User():
                     flash(f"Se registro el usuario {newUserName} con éxito.","info")
                 else:
                     flash("El usuario o correo electrónico ya estan en uso.","error")
-                    return render_template("Seccion_Registrar_User.html",data1 = newName, data2 = newAp1, data3 = newAp2, data4 = newType, Super = session.get("is_Super"))
-
             else:
                     flash("El usuario o correo electrónico ya estan en uso.","error")
 

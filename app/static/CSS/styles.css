@@ -2,12 +2,13 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.0em;
     margin: 0px;
+    overflow: hidden;
 }
 
 .hidden {
     display: none;
-    overflow-y: hidden;
     opacity: 0%;
+    overflow: hidden;
 }
 
 .loader {
@@ -17,6 +18,7 @@ body {
     align-items: center;
     /*vertical*/
     height: 100vh;
+    overflow: hidden;
 }
 
 /* From Uiverse.io by Nawsome */
@@ -437,7 +439,7 @@ body {
     background-color: rgb(145, 16, 42);
 }
 
-input {
+input,select {
     box-sizing: border-box;
     padding: 5px;
     margin: 10px 0px 10px 0px; /* ALTO DERECHA ABAJO IZQUIERDA */
@@ -446,7 +448,9 @@ input {
     color: #000000;
     width: 100%;
 }
-
+option:focus-within{
+    background-color: #3572EF;
+}
 input[type="submit"] {
     background-color: #3572EF;
     color: #ffffff;
@@ -714,12 +718,11 @@ input[type="submit"]:hover {
 /* Seccion Registrar Usuarios */
 .container-user-registrer{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     width: 100%;
-    text-align: center;
 }
 
 .user-registrer{
@@ -773,7 +776,7 @@ input[type="submit"]:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: start;
 }
 .personal-name, .data-job{
     display: flex;
@@ -902,6 +905,10 @@ input[type="submit"]:hover {
         font-size: 0.9em;
         margin-right: 7px;
         padding: 0px;
+    }
+    /* Seccion Personal CCAI */
+    .full-personal-name, .full-data-job{
+        justify-content: center;
     }
 
     /* Seccion ayuda */

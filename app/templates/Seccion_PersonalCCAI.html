@@ -75,7 +75,7 @@
                         </form>
                     </figure>
 
-                    <form class="all-personal-data" action="/Change_Data_Person" method="post">
+                    <form class="all-personal-data" action="/Change_Data_Person" method="post" onsubmit="return Confirm_Update_Funtion()">
                         <input type="hidden" name="person_id" value="{{ person_id }}" readonly>
                         <label for="NamePersonCCAI">Nombre</label>
                         <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">

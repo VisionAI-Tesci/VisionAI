@@ -1,6 +1,6 @@
 import face_recognition, cv2, os, keyboard, pickle
 import datetime as dt
-
+url = "http://localhost:8080/stream"
 dataPath = "app/Personal_CCAI"
 personalCCAIList = os.listdir(dataPath)
 #Crear carpeta de grabaciones y inicializar videowritter()
