@@ -2,7 +2,7 @@
 {% block title %}Vision AI - Personal CCAI{% endblock %}
 {% block body %}
     <div style="text-align: center;">
-        <h1>Personal del edificio CCAI</h1>
+        <h1>Personal del Edificio CCAI</h1>
     </div>
     <div class="container-personal-registrer">
         <div class="personal-registrer">
@@ -46,7 +46,16 @@
                 </section>
                 
                 <input type="submit" value="Registrar">
+                
             </form>
+
+            <div class="db-images">
+                <form action="/DB_Img_Update" method="post" onload="" onsubmit="return Confirm_UpImg_Funtion()">
+                    <h4>¿Realizó escaneos de rostros?</h4>
+                    <p style="margin: 0;">Actualize la base de datos de las imagenes</p>
+                    <input type="submit" id="images-update" value="Actualizar imágenes para el escaneo">
+                </form>
+            </div>
         </div>
 
         <div class="all-personalCCAI">
@@ -60,7 +69,10 @@
                             <input type="hidden" name="person_id" value="{{ person_id }}">
                         </form>
 
-                        <form action=""><input type="submit" value="Tomar fotos" id="FaceCam"></form>
+                        <form action="/Face_Capture" method="post">
+                            <input type="hidden" name="person_id" readonly value="{{ person_id }}">
+                            <input type="submit" value="Tomar fotos" id="FaceCam" onclick="Open_New_Window()">
+                        </form>
                     </figure>
 
                     <form class="all-personal-data" action="/Change_Data_Person" method="post">

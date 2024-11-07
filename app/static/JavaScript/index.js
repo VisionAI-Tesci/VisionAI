@@ -22,17 +22,23 @@ $(document).ready(function () {
 });
 
 function Confirm_Delete_Funtion(){
-    return confirm("¿Eliminar usuario?")
+    return confirm("¿Eliminar usuario?");
 }
 
 function Confirm_Update_Funtion(){
-    return confirm("¿Actualizar datos del usuario?")
+    return confirm("¿Actualizar datos del usuario?");
 }
 
 function Confirm_LogOut_Funtion(){
-    return confirm("¿Cerrar sesión?")
+    return confirm("¿Cerrar sesión?");
 }
 
 function Confirm_UpPasword_Funtion(){
-    return confirm("Actualizar contraseña?")
+    return confirm("¿Actualizar contraseña?");
+}
+function Confirm_UpImg_Funtion(){
+    return confirm("Este proceso puede tardar, NO ACTUALICE/CAMBIE LA PÁGINA. ¿Continuar el proceso?");
+}
+function Open_New_Window(){
+    window.open("/Seccion_Fotos","_blank", "left = 500,menubar=0,location=yes,resizable=0,scrollbars=0,status=1,titlebar=0,width=670,height=500");
 }

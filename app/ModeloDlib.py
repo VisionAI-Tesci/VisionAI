@@ -1,6 +1,6 @@
 import cv2, dlib, imutils,keyboard, os
 
-dataPath = "app/Personal_CCAI2"
+dataPath = "app/Personal_CCAI"
 
 def Face_Capture(newPerson):
     personPath = dataPath +'/'+ newPerson
@@ -19,7 +19,7 @@ def Face_Capture(newPerson):
     cap.set(5, 20.0) #fps
     cap.set(3, 640) #Ancho
     cap.set(4, 480) #Alto
-    # cap.set(10, 20) #Brillo
+    cap.set(10, 20) #Brillo
     while True:
         ret, frame = cap.read()
 
@@ -27,6 +27,7 @@ def Face_Capture(newPerson):
             break
 
         frame = imutils.resize(frame, width=600)
+        frame = cv2.flip(frame, 1)
         auxFrame = frame.copy()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         coordinates_bboxes = face_detector(gray, 1)
@@ -42,6 +43,12 @@ def Face_Capture(newPerson):
                 cv2.imwrite(personPath + f"/rostro {countImages}.jpg", rostro)
                 countImages +=1
                 print(f"imagen {countImages} creada.")
+
+        if keyboard.is_pressed("Esc") or countImages == 10:
+            cap.release()
+            cv2.destroyAllWindows()
+
+            break
 
         suc, encode = cv2.imencode('.jpg', frame)
         frame = encode.tobytes()

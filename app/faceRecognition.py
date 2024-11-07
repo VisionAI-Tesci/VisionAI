@@ -1,7 +1,7 @@
 import face_recognition, cv2, os, keyboard, pickle
 import datetime as dt
 
-dataPath = "app/Personal_CCAI2"
+dataPath = "app/Personal_CCAI"
 personalCCAIList = os.listdir(dataPath)
 #Crear carpeta de grabaciones y inicializar videowritter()
 monthYear = dt.datetime.now().strftime("%B-%Y")
@@ -49,7 +49,7 @@ def process_Camara():
     else:
         print("Los datos ya fueron cargados desde el archivo.")
     global camara, saveVideo
-    camara = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    camara = cv2.VideoCapture(1, cv2.CAP_DSHOW)
     #Obtener info de la camara
     widht = int(camara.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(camara.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -91,6 +91,9 @@ def process_Camara():
         yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
         if keyboard.is_pressed("ctrl") and keyboard.is_pressed("shift") and keyboard.is_pressed("z"):
+            saveVideo.release()
+            camara.release()
+            cv2.destroyAllWindows()
             break
     saveVideo.release()
     camara.release()

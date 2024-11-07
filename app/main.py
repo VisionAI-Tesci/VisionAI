@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.message import EmailMessage
 import ModeloDlib as MDlib
-import faceRecognition
+import faceRecognition as face_rec
 import datetime as dt
 
 # Response.headers['Strict-Transport-Security'] = 'max-age=31536000;' #Convierte las peticiones de http a https
@@ -31,8 +31,7 @@ app.config["MYSQL_DB"] = os.getenv('MY_DB')
 
 app.secret_key = secrets.token_urlsafe(32)  
 MySqlDB = MySQL(app)
-#rutaCam = "http://192.168.1.156:8080"
-face_rec = faceRecognition
+#rutaCam = "http://192.168.1.156:8080" 
 
 ######################################################################################################################################
 def SendEmail(remitente, destinatario, asunto, rutaEmail):
@@ -138,6 +137,7 @@ def Log_Out():
     session.pop("userAp2", None)
     session.pop("is_Super", None)
     session.pop("is_Admin", None)
+    session.pop("fullNameCCAI", None)
     flash("Sesión cerrada con éxito.","message")
     return redirect(url_for("index"))
 
@@ -155,8 +155,21 @@ def Seccion_Camara():
     except Exception as error:
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
 
-    return redirect(url_for("index"))        
+    return redirect(url_for("index"))   
 
+@app.route("/Seccion_Fotos")
+def Seccion_Fotos():
+    try:        
+        if 'userName' in session:
+            return render_template("Seccion_Fotos.html",Admin= session.get("is_Admin"))
+
+        else:
+            flash('No se pudo asignar un tipo de usuario', 'error')
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+
+    return redirect(url_for("index"))  
 #Seccion PERSONAL CCAI
 @app.route("/Seccion_PersonalCCAI")
 def Seccion_PersonalCCAI():
@@ -168,8 +181,8 @@ def Seccion_PersonalCCAI():
 
             if all_PersonsCCAI != None:
                 tam = len(all_PersonsCCAI)
-                print(all_PersonsCCAI)
-                print(tam)
+                # print(all_PersonsCCAI)
+                # print(tam)
                 if 'is_Admin' in session:
                     return render_template("Seccion_PersonalCCAI.html",Size=tam, PersonsCCAI=all_PersonsCCAI, Admin=session.get("is_Admin"))
                 elif 'is_Super' in session:
@@ -325,9 +338,9 @@ def btn_changeDataUser():
                 # Verificar si todos los campos necesarios están llenos
                 if all([request.form["username"], request.form["name"], request.form["ap1"], request.form["ap2"], request.form["correo"]]):
                     Update_user = request.form["username"]
-                    Update_name = request.form["name"]
-                    Update_ap1 = request.form["ap1"]
-                    Update_ap2 = request.form["ap2"]
+                    Update_name = request.form["name"].upper()
+                    Update_ap1 = request.form["ap1"].upper()
+                    Update_ap2 = request.form["ap2"].upper()
                     Update_email = request.form["correo"]
 
                     cur = MySqlDB.connection.cursor()
@@ -442,9 +455,9 @@ def Delete_User():
 def Register_User():
     try:
         newUserName = request.form["newusername"]
-        newName = request.form["newname"].capitalize()
-        newAp1 = request.form["newap1"].capitalize()
-        newAp2 = request.form["newap2"].capitalize()
+        newName = request.form["newname"].upper()
+        newAp1 = request.form["newap1"].upper()
+        newAp2 = request.form["newap2"].upper()
         newCorreo = request.form["newcorreo"].lower()
         newType = request.form["newtype"]
         newPassword = request.form["newpass"]
@@ -484,10 +497,10 @@ def Register_User():
 @app.route("/Register_PersonCCAI", methods=["POST"])
 def Register_PersonCCAI():
     try:
-        newPersonName = request.form["newPersonName"].lower().capitalize()
-        newPersonAp1 = request.form["newPersonAp1"].lower().capitalize()
-        newPersonAp2 = request.form["newPersonAp2"].lower().capitalize()
-        newJobPerson = request.form["newJobPerson"].lower().capitalize()
+        newPersonName = request.form["newPersonName"].upper()
+        newPersonAp1 = request.form["newPersonAp1"].upper()
+        newPersonAp2 = request.form["newPersonAp2"].upper()
+        newJobPerson = request.form["newJobPerson"].upper()
         newSHPerson = int(request.form["newSHPerson"])
         newEHPerson = int(request.form["newEHPerson"])
 
@@ -501,7 +514,7 @@ def Register_PersonCCAI():
                     cur.execute("INSERT INTO personalccai (Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal) VALUES (%s, %s, %s, %s, %s, %s)",(newPersonName, newPersonAp1, newPersonAp2, newJobPerson, newSHPerson, newEHPerson))
                     MySqlDB.connection.commit()
                     cur.close()
-                    flash(f"Se registro la persona {newPersonName, newPersonAp1, newPersonAp2} con éxito.","info")
+                    flash(f"Se registro la persona {newPersonName} {newPersonAp1} con éxito.","info")
                 else:
                     flash("Ya existe una persona con el mismo nombre.","error")
             else:
@@ -517,15 +530,15 @@ def Register_PersonCCAI():
 @app.route('/Delete_PersonCCAI', methods = ["POST"])
 def Delete_PersonCCAI():
     try:
-        id_PersonCCAI = request.form["person_id"]
 
-        if request.method == "POST":
+        if request.method == "POST" and 'username' in session:
+            id_PersonCCAI = request.form["person_id"]
+
             if id_PersonCCAI != "":
                 cur = MySqlDB.connection.cursor()
                 cur.execute("DELETE FROM personalccai WHERE ID = %s", (id_PersonCCAI,))
                 MySqlDB.connection.commit()
                 cur.close() 
-
                 flash(f"Se elimino con éxito.","info")
             else:
                 flash("No estan llenos todos los campos","warning")
@@ -543,29 +556,42 @@ def Change_Data_Person():
         if request.method == "POST":
             if 'userName' in session:
                 IDPerson = request.form["person_id"]
-                upPersonName = request.form["NamePersonCCAI"].lower().capitalize()
-                upPersonAp1 = request.form["Ap1PersonalCCAI"].lower().capitalize()
-                upPersonAp2 = request.form["Ap2PersonalCCAI"].lower().capitalize()
-                upJobPerson = request.form["JobPersonCCAI"].lower().capitalize()
+                upPersonName = request.form["NamePersonCCAI"].upper()
+                upPersonAp1 = request.form["Ap1PersonalCCAI"].upper()
+                upPersonAp2 = request.form["Ap2PersonalCCAI"].upper()
+                upJobPerson = request.form["JobPersonCCAI"].upper()
                 upSHPerson = int(request.form["SHPersonCCAI"])
                 upEHPerson = int(request.form["EHPersonCCAI"])
 
                 if all([upPersonName and upPersonAp1 and upPersonAp2 and upJobPerson and upSHPerson and upEHPerson]):
                     cur = MySqlDB.connection.cursor()
-                    cur.execute("SELECT Nombre, Apellido_1, Apellido_2 FROM personalccai WHERE ID = %s", (IDPerson,))
+                    cur.execute("SELECT ID FROM personalccai WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s AND ID != %s", (upPersonName, upPersonAp1, upPersonAp2, IDPerson))
                     sql_Value = cur.fetchone()
 
-                    if sql_Value != None: #No existe si es none
-                        cur.execute("UPDATE personalccai SET Nombre = %s, Apellido_1 = %s, Apellido_2 = %s, Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE Nombre = %s AND Apellido_1 = %s AND Apellido_2 = %s OR ID = %s",(upPersonName, upPersonAp1, upPersonAp2, upJobPerson, upSHPerson, upEHPerson, upPersonName, upPersonAp1, upPersonAp2, IDPerson))
+                    if sql_Value is not None:
+                        cur.execute("UPDATE personalccai SET Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE ID = %s",(upJobPerson, upSHPerson, upEHPerson, IDPerson))
                         MySqlDB.connection.commit()
-                        flash(f"Los datos de {upPersonName, upPersonAp1} fueron actualizados.","info")
-                    # else:
-                    #     dbPersonName, dbPersonAp1, dbPersonAp2 = sql_Value
-                    #     if upPersonName == dbPersonName and upPersonAp1 == dbPersonAp1 and upPersonAp2 == dbPersonAp2:
-                    #         cur.execute("UPDATE personalccai SET Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE ID = %s",(upJobPerson, upSHPerson, upEHPerson, IDPerson))
-                    #         MySqlDB.connection.commit()
-                    #         flash(f"Los demás datos de la persona fueron actualizados.","info")
-                    cur.close()
+                        cur.close()
+                        flash(f"Ya hay alguien con el mismo nombre, se actualizaron los demás datos.","info")
+                    else:
+                        cur.execute("SELECT Nombre, Apellido_1, Apellido_2 FROM personalccai WHERE ID = %s", (IDPerson,))
+                        sql_Value = cur.fetchone()
+                        dbName, dbAp1, dbAp2 = sql_Value
+
+                        dbName = dbName.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                        dbAp1 = dbAp1.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                        dbAp2 = dbAp2.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                        cur.execute("UPDATE personalccai SET Nombre = %s, Apellido_1 = %s, Apellido_2 = %s, Puesto = %s, HorarioEnt = %s, HorarioSal = %s WHERE ID = %s",(upPersonName, upPersonAp1, upPersonAp2, upJobPerson, upSHPerson, upEHPerson, IDPerson))
+                        MySqlDB.connection.commit()
+
+                        upName = upPersonName.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                        upAp1 = upPersonAp1.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                        upAp2 = upPersonAp2.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+
+                        os.rename(f"app/personal_CCAI/{dbName} {dbAp1} {dbAp2}", f"app/personal_CCAI/{upName} {upAp1} {upAp2}" )
+                        cur.close()
+                        flash(f"Todos los datos de {upPersonName} {upPersonAp1} fueron actualizados.","info")
+                        
                 else:
                     flash("No estan llenos todos los campos","warning")
 
@@ -580,11 +606,74 @@ def Change_Data_Person():
 def Camera_Activate():
         return Response(face_rec.process_Camara(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+#Función Tomar fotos (Sacar datos de sql)
+@app.route('/Face_Capture', methods=["POST"])
+def Face_Capture():
+    try:
+        if request.method == "POST" and 'userName' in session:
+            IDPerson = request.form["person_id"]
+
+            if IDPerson != "":
+                cur = MySqlDB.connection.cursor()
+                cur.execute("SELECT Nombre, Apellido_1, Apellido_2 FROM personalccai WHERE ID = %s", (IDPerson,))
+                sql_Value = cur.fetchone()
+                cur.close()
+                if sql_Value != None:
+                    dbName, dbAp1, dbAp2 = sql_Value
+                    fullName = f"{dbName} {dbAp1} {dbAp2}"
+                    fullName = fullName.replace("Ñ", "N").replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+                    session['fullNameCCAI'] = fullName
+                else:
+                    flash("No coincide con ninguna persona.","error")
+
+            else:
+                flash("No estan llenos todos los campos","warning")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_PersonalCCAI"))
 #Función Tomar fotos de rostros
 @app.route('/Face_Photos_Capture')
 def Face_Photos_Capture():
-        return Response(MDlib.Face_Capture(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        return Response(MDlib.Face_Capture(session.get('fullNameCCAI')), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+#Función ACTUALIZAR BD DE IMAGENES DE LOS ROSTROS
+@app.route("/DB_Img_Update", methods=["POST"])
+def DB_Img_Update():
+    try:
+        if request.method == "POST" and 'userName' in session:
+            os.remove("app\Binary_Data\encodings.pkl")
+            dataPath = "app/Personal_CCAI"
+            personalCCAIList = os.listdir(dataPath)
+            known_names, known_faces_encodings = face_rec.load_encodings_from_file()
+
+            if not known_faces_encodings:  #Si no existen datos cargados, calcula y guarda
+                for nameDirectory in personalCCAIList:
+                    personPath = os.path.join(dataPath, nameDirectory)
+
+                    for imageName in os.listdir(personPath):
+                        image_path = os.path.join(personPath, imageName)
+                        image = cv2.imread(image_path)
+                        face_loc = face_recognition.face_locations(image, model="hog")
+                        face_encodings = face_recognition.face_encodings(image, known_face_locations=face_loc)
+
+                        for encoding in face_encodings:
+                            known_faces_encodings.append(encoding)
+                            known_names.append(nameDirectory)
+                        print(f"Cargada la imagen: {image_path}")
+
+                # Guarda los datos en el archivo después de cargarlos todos
+                face_rec.save_encodings_to_file(known_names, known_faces_encodings)
+                print("Datos guardados en archivo para evitar cálculos repetidos.")
+                flash("Las imagenes fueron cargadas con éxito.","info")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_PersonalCCAI"))
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
     #app.run(host='0.0.0.0', port=5000, debug=True)

@@ -367,7 +367,9 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 95vh;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .message-container {
@@ -548,7 +550,6 @@ input[type="submit"]:hover {
     width: 100%;
     justify-content: space-between;
     word-wrap: break-word;
-    overflow-x: scroll;
 
 }
 .user-options {
@@ -616,9 +617,11 @@ input[type="submit"]:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .container-data-user {
+    box-sizing: border-box;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -638,6 +641,7 @@ input[type="submit"]:hover {
 }
 
 .data-user {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     /* ALTO DERECHA ABAJO IZQUIERDA */
@@ -655,9 +659,9 @@ input[type="submit"]:hover {
     flex-direction: row;
     flex-wrap: nowrap;
     margin: 15px 5px 15px 5px;
-    border: 1px solid #292929;
+    border: 2px solid #000000;
     padding: 15px;
-
+    border-radius: 20px;
 }
 
 .how-use {
@@ -674,7 +678,9 @@ input[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     margin: 15px 5px 15px 5px;
-    border: 1px solid #292929;
+    border: 2px solid #000000;
+    border-radius: 20px;
+
     padding: 15px;
     color: #000FE0;
 }
@@ -784,7 +790,16 @@ input[type="submit"]:hover {
     justify-content: center;
     align-items: center;
 }
-
+.db-images{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+#images-update{
+    background-color: #06D001;
+}
 .all-personalCCAI{
     display: flex;
     flex-direction: row;
@@ -816,12 +831,21 @@ input[type="submit"]:hover {
 #DeletePerson{
     background-color: crimson;
 }
-#DeletePerson:hover, #FaceCam:hover {
+#DeletePerson:hover, #FaceCam:hover, #images-update:hover {
     background-color: #292929;
     box-shadow: 2px 2px 5px #ffffff;
 }
 #FaceCam{
     background-color: #06D001;
+}
+
+.FaceScan{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 /* Media queries */
 @media (min-width: 1024px) and (max-width: 1200px) {
@@ -851,6 +875,7 @@ input[type="submit"]:hover {
         width: 100%;
     }
     .navigation-bar{
+        overflow-x: scroll;
         font-size: 0.9em;
         padding: 0px 0px 0px 0px;
         align-items: center;
