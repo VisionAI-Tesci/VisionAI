@@ -10,6 +10,37 @@
         </figure>
         <div class="people-detected">
             <h2>Personal Detectado</h2>
+            <form action="/Delete_User" method="post">
+                <div class="users-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido 1</th>
+                                <th>Apellido 2</th>
+                                <th>Puesto</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha in personsDetected %}
+                            <tr>
+                                <td>{{ Nombre }}</td>
+                                <td>{{ Apellido_1 }}</td>
+                                <td>{{ Apellido_2 }}</td>
+                                <td>{{ Puesto }}</td>
+                                <td>{{ HorarioEnt }}</td>
+                                <td>{{ HorarioSal }}</td>
+                                <td>{{ Fecha }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     </div>
 </div>

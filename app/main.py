@@ -1,5 +1,5 @@
 from flask import Flask, Response, render_template, request, session, redirect, url_for, flash
-import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, face_recognition, pickle
+import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, face_recognition, pickle,socket
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
 from email.mime.multipart import MIMEMultipart
@@ -9,19 +9,26 @@ import ModeloDlib as MDlib
 import faceRecognition as face_rec
 import datetime as dt
 
-# Response.headers['Strict-Transport-Security'] = 'max-age=31536000;' #Convierte las peticiones de http a https
-# Response.headers['X-Content-Type-Options'] = 'nosniff' #no se deben cambiar ni seguir el contenido de Content-Type.
-# Response.headers['X-Frame-Options'] = 'SAMEORIGIN' #No permite que la pagina se insertada en etiquetas iframe
-
 app = Flask(__name__)
 
 app.config.update(
-    SESSION_COOKIE_SECURE=True,  # Limita las cookies a solo el trafico por https
+    SESSION_COOKIE_SECURE=False,  # Limita las cookies a solo el trafico por https
     SESSION_COOKIE_HTTPONLY=True,  # No permite que sean leidas por JS
-    SESSION_COOKIE_SAMESITE='Lax')
+    SESSION_COOKIE_SAMESITE=None)
+def extract_ip():
+    st = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        st.connect(("10.255.255.255", 1))
+        IP = st.getsockname()[0]
+    except Exception:
+        IP = "127.0.0.1"
+    finally:
+        st.close()
+    return IP
 
+app.config['SESSION_COOKIE_DOMAIN'] = extract_ip()
 # Response.set_cookie('UserName', 'flask', secure=True, httponly=True, samesite='Lax')
-
+app.config['SERVER_NAME'] = extract_ip()+':5000'
 load_dotenv() #CARGAR VARIABLES DE ENTORNO
 # Conexion base de datos mySQL
 app.config["MYSQL_HOST"] = os.getenv('MY_DB_HOST')
@@ -80,6 +87,8 @@ def Code_Generate():
 # Ruta principal
 @app.route("/")
 def index():
+    print("Session :", session.get('userName'))
+    print("Session Test:", session.get('test'))
     return render_template("index.html")
 
 #función LOGIN (INICIO DE SESIÓN)
@@ -98,22 +107,22 @@ def btn_Login():
                 user = sql_Value[0]
                 passwordEncode = str(sql_Value[1])
                 typeuser = sql_Value[2]
-                isChecked =bcrypt.checkpw(Contraseña.encode('utf-8'),passwordEncode.encode('utf-8') )
-
+                isChecked =bcrypt.checkpw(Contraseña.encode('utf-8'),passwordEncode.encode('utf-8'))
+                cur.execute("SELECT Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha FROM personsdetections")
+                all_Persons = cur.fetchall()
+                cur.close()
                 if isChecked == True and typeuser == "Administrador":
                     session["userName"] = user
                     session["is_Admin"] = True
-                    return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"))
+                    return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"),personsDetected = all_Persons)
                 elif isChecked == True and typeuser == "SuperUsuario":
                     session["userName"] = user
                     session["is_Super"] = True
-                    return render_template("Seccion_Camara.html",Super= session.get("is_Super"))
+                    return render_template("Seccion_Camara.html",Super= session.get("is_Super"),personsDetected = all_Persons)
                 else:
                     flash('El usuario o la contraseña no coinciden', 'error')
-                    cur.close()
 
             else:
-                cur.close()
                 flash('El usuario o la contraseña no coinciden', 'error')
 
         else:
@@ -144,14 +153,22 @@ def Log_Out():
 #SECCIÓN CÁMARA
 @app.route("/Seccion_Camara")
 def Seccion_Camara():
-    try:        
-        if 'is_Admin' in session:
-            return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"))
-        elif 'is_Super' in session:
-            return render_template("Seccion_Camara.html",Super= session.get("is_Super"))
-        else:
-            flash('No se pudo asignar un tipo de usuario', 'error')
+    try:
+        if 'userName' in session:
+            cur = MySqlDB.connection.cursor()
+            cur.execute("SELECT Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha FROM personsdetections")
+            all_Persons = cur.fetchall()
 
+            if all_Persons != None:
+                if 'is_Admin' in session:
+                    return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"), personsDetected = all_Persons)
+                elif 'is_Super' in session:
+                    return render_template("Seccion_Camara.html",Super= session.get("is_Super"),personsDetected = all_Persons)
+                else:
+                    flash('No se pudo asignar un tipo de usuario', 'error')
+        else:
+            flash('No se ha iniciado sesión', 'error')
+            return redirect(url_for("index"))
     except Exception as error:
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
 
@@ -672,5 +689,5 @@ def DB_Img_Update():
 
     return redirect(url_for("Seccion_PersonalCCAI"))
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
-    #app.run(host='0.0.0.0', port=5000, debug=True)
+    #app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

@@ -1,6 +1,6 @@
 import face_recognition, cv2, os, keyboard, pickle
 import datetime as dt
-url = "http://localhost:8080/stream"
+# url = "http://localhost:8080/stream"
 dataPath = "app/Personal_CCAI"
 personalCCAIList = os.listdir(dataPath)
 #Crear carpeta de grabaciones y inicializar videowritter()
@@ -49,12 +49,10 @@ def process_Camara():
     else:
         print("Los datos ya fueron cargados desde el archivo.")
     global camara, saveVideo
-    camara = cv2.VideoCapture(1, cv2.CAP_DSHOW)
-    #Obtener info de la camara
+    camara = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     widht = int(camara.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(camara.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    #Crear nombre y codificación del video
     nameVideo = str(dt.datetime.now().strftime("%A %d-%b-%Y %H-%M-%S %p")) + ".avi"
     nameVideo = dirRecord + '/' + nameVideo
     saveVideo = cv2.VideoWriter(nameVideo, cv2.VideoWriter.fourcc('M', 'J', 'P', 'G'), 24.0, (widht, height))
@@ -79,11 +77,11 @@ def process_Camara():
                 if True in results:
                     match_index = results.index(True)
                     text = known_names[match_index]
-                    color = (125, 220, 0)
+                    color = (255, 0, 0)
 
                 top, right, bottom, left = [coord * 2 for coord in face_location]
                 cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
-                cv2.putText(frame, text, (left, bottom + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+                cv2.putText(frame, text, (left, bottom + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1) 
 
         saveVideo.write(frame)
         suc, encode = cv2.imencode('.jpg', frame)
@@ -95,6 +93,7 @@ def process_Camara():
             camara.release()
             cv2.destroyAllWindows()
             break
+
     saveVideo.release()
     camara.release()
     cv2.destroyAllWindows()

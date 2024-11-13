@@ -1,10 +1,9 @@
 {% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
 {% block title %}Vision AI - Personal CCAI{% endblock %}
 {% block body %}
-    <div style="text-align: center;">
-        <h1>Personal del Edificio CCAI</h1>
-    </div>
     <div class="container-personal-registrer">
+
+        <h1 style="text-align: center;">Personal del Edificio CCAI</h1>
         <div class="personal-registrer">
 
             <form class="form-personal-registrer" action="/Register_PersonCCAI" method="post">
@@ -42,11 +41,8 @@
                         <label for="newEHPerson">Hora de salida <sup>(24h)</sup></label> 
                         <input type="text" name="newEHPerson" pattern="^[0-9]+$" title="Solo se permiten números" placeholder="Escribe aquí..." maxlength="2" autocomplete="off" required>
                     </div>
-
                 </section>
-                
                 <input type="submit" value="Registrar">
-                
             </form>
 
             <div class="db-images">

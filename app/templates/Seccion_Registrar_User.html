@@ -1,62 +1,59 @@
 {% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
-{% block title %}Vision AI - Usuarios{% endblock %}
+{% block title %}Vision AI - Personal CCAI{% endblock %}
 {% block body %}
-<div class="hidden container-user-registrer">
-    <div style="text-align: center;"><h1>Usuarios de Vision AI</h1></div>
-    <div class="user-registrer">
-        <form class="form-registrer" action="/Register_User" method="post">
-            <h2 style="text-align: center;">Registrar Usuario</h2>
+    <div class="hidden container-user-registrer">
+        <h1 style="text-align: center;">Usuarios de Vision AI</h1>
+        <div class="user-registrer">
+            <form class="form-registrer" action="/Register_User" method="post">
+                <h2 style="text-align: center;">Registrar Usuario</h2>
 
-            <section class="full-personal-name">
-                <div class="personal-name">
-                    <label for="username">Username</label>
-                    <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
-                </div>
+                <section class="full-personal-name">
+                    <div class="personal-name">
+                        <label for="username">Username</label>
+                        <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+                    </div>
 
-                <div class="personal-name">
-                    <label for="name">Nombre</label>
-                    <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
-                </div>
+                    <div class="personal-name">
+                        <label for="name">Nombre</label>
+                        <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
 
-                <div class="personal-name">
-                    <label for="ap1">Apellido Paterno</label>
-                    <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
-                </div>
+                    <div class="personal-name">
+                        <label for="ap1">Apellido Paterno</label>
+                        <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
 
-                <div class="personal-name">
-                    <label for="ap2">Apellido Materno</label>
-                    <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
-                </div>
-            </section>
+                    <div class="personal-name">
+                        <label for="ap2">Apellido Materno</label>
+                        <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
+                </section>
 
-            <section class="full-personal-name">
-                <div class="personal-name">
-                    <label for="correo">Correo Electrónico</label>
-                    <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
-                </div>
+                <section class="full-personal-name">
+                    <div class="personal-name">
+                        <label for="correo">Correo Electrónico</label>
+                        <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
+                    </div>
 
-                <div class="personal-name">
-                    <label for="type">Tipo de Usuario</label>
-                    
-                <select name="newtype" id="type" required>
-                    <option value="" disabled selected>Selecciona una opción</option>
-                    <option value="Administrador">Administrador</option>
-                    <option value="SuperUsuario">SuperUsuario</option>
-                </select>
+                    <div class="personal-name">
+                        <label for="type">Tipo de Usuario</label>
+                        <select name="newtype" id="type" required>
+                            <option value="" disabled selected>Selecciona una opción</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="SuperUsuario">SuperUsuario</option>
+                        </select>
+                    </div>
 
-                </div>
+                    <div class="personal-name">
+                        <label for="pass">Contraseña</label>
+                        <input type="password" name="newpass" placeholder="Escribe aquí..." required>
+                    </div>
+                </section>
 
-                <div class="personal-name">
-                    <label for="pass">Contraseña</label>
-                    <input type="password" name="newpass" placeholder="Escribe aquí..." required>
-                </div>
-            </section>
-
-            <input type="submit" value="Registrar">
-        </form>
-    </div>
-    <h2>Usuarios Registrados Actualmente</h2>
-
+                <input type="submit" value="Registrar">
+            </form>
+        </div>
+        <h2>Usuarios Registrados Actualmente</h2>
         <div class="all-personalCCAI">
             {% for ID, UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
                 <div class="person">
@@ -90,8 +87,8 @@
                 </div>
             {% endfor %}
         </div>
-</div>
-<footer class="hidden Copyright" style="color: black;">
-    <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
-</footer>
+    </div>
+    <footer class="hidden Copyright" style="color: black;">
+        <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+    </footer>
 {% endblock %}
