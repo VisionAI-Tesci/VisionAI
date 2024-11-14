@@ -1,5 +1,10 @@
-import face_recognition, cv2, os, keyboard, pickle
+import face_recognition, cv2, os, keyboard, pickle, asyncio
+from db_connection import create_connection, SearchDataPerson, InsertInLog
 import datetime as dt
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
+
+connection = create_connection()
 # url = "http://localhost:8080/stream"
 dataPath = "app/Personal_CCAI"
 personalCCAIList = os.listdir(dataPath)
@@ -69,6 +74,7 @@ def process_Camara():
         if face_locations:
             face_frame_encodings = face_recognition.face_encodings(small_Frame, known_face_locations=face_locations)
             for (face_location, face_encoding) in zip(face_locations, face_frame_encodings):
+                global results, text
                 results = face_recognition.compare_faces(known_faces_encodings, face_encoding)
 
                 text = "Desconocido"
@@ -76,12 +82,28 @@ def process_Camara():
 
                 if True in results:
                     match_index = results.index(True)
-                    text = known_names[match_index]
+                    text = str(known_names[match_index])
+                    fullName = text.split(" ")
+                    Name, Ap1, Ap2 = fullName
+                    sql_Values= SearchDataPerson(connection,Name, Ap1, Ap2)
+
+                    if sql_Values is not None:
+                        NameIn, Ap1In, Ap2IN, Job, StartHour, EndHour = sql_Values
+                        text= f"{Name} {Ap1} {Ap2}"
+                        textJob=  f"Puesto: {Job}"
+                        textHours = f"Horario: {StartHour}:00 a {EndHour}:00" 
+
                     color = (255, 0, 0)
 
                 top, right, bottom, left = [coord * 2 for coord in face_location]
                 cv2.rectangle(frame, (left, top), (right, bottom), color, 2)
-                cv2.putText(frame, text, (left, bottom + 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,0), 1) 
+                cv2.putText(frame, text, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1)
+                cv2.putText(frame, textJob, (left, bottom + 40), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1) 
+                cv2.putText(frame, textHours, (left, bottom + 60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,0,0), 1)
+                # asyncio.run(InsertInLog(connection, NameIn, Ap1In, Ap2IN, Job, StartHour, EndHour))
+                scheduler = BackgroundScheduler()
+                scheduler.add_job(InsertInLog(connection, NameIn, Ap1In, Ap2IN, Job, StartHour, EndHour), 'interval', seconds=5)
+                scheduler.start()
 
         saveVideo.write(frame)
         suc, encode = cv2.imencode('.jpg', frame)

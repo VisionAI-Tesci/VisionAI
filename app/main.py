@@ -150,6 +150,7 @@ def Log_Out():
     flash("Sesión cerrada con éxito.","message")
     return redirect(url_for("index"))
 
+
 #SECCIÓN CÁMARA
 @app.route("/Seccion_Camara")
 def Seccion_Camara():
@@ -160,16 +161,18 @@ def Seccion_Camara():
             all_Persons = cur.fetchall()
 
             if all_Persons != None:
-                if 'is_Admin' in session:
-                    return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"), personsDetected = all_Persons)
-                elif 'is_Super' in session:
-                    return render_template("Seccion_Camara.html",Super= session.get("is_Super"),personsDetected = all_Persons)
-                else:
-                    flash('No se pudo asignar un tipo de usuario', 'error')
+                    if 'is_Admin' in session:
+                        return render_template("Seccion_Camara.html",Admin= session.get("is_Admin"), personsDetected = all_Persons)
+                    elif 'is_Super' in session:
+                        return render_template("Seccion_Camara.html",Super= session.get("is_Super"),personsDetected = all_Persons)
+                    else:
+                        flash('No se pudo asignar un tipo de usuario', 'error')
         else:
             flash('No se ha iniciado sesión', 'error')
             return redirect(url_for("index"))
+
     except Exception as error:
+        print(error)
         flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
 
     return redirect(url_for("index"))   
