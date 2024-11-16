@@ -1,0 +1,75 @@
+{% if Super == True %}{% extends './baseSuper.html' %}{% else %}{% extends './base.html' %}{% endif %}
+{% block title %}Vision AI - Detecciones{% endblock %}
+{% block body %}
+<div class="hidden container-allperson-detections">
+    <h2 style="margin-top: 0;">Detecciones Totales del Personal</h2>
+    <h4>Ordenar por:</h4>
+    <div class="container-orderBy">
+        <form action="/OrderByPersonName"><input type="submit" value="Nombre"></form>
+        <form action="/OrderByPersonAp1"><input type="submit" value="Apellido Paterno"></form>
+        <form action="/OrderByPersonAp2"><input type="submit" value="Apellido Materno"></form>
+        <form action="OrderByPersonDate"><input type="submit" value="Fecha"></form>
+        <form action="/Seccion_Deteccion"><input type="submit" value="Actualizar tabla"></form>
+    </div>
+    <h4>Buscar por Nombre:</h4>
+    <form class="full-personal-name" action="SearchPersonData" method="post">
+        <div class="personal-name">
+            <label for="personCCAIName">Nombre</label>
+            <input type="text" name="personCCAIName" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras"
+                placeholder="Escribe aquí..." autocomplete="off" required>
+        </div>
+
+        <div class="personal-name">
+            <label for="personCCAIAp1">Apellido Paterno</label>
+            <input type="text" name="personCCAIAp1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras"
+                placeholder="Escribe aquí..." autocomplete="off" required>
+        </div>
+
+        <div class="personal-name">
+            <label for="personCCAIAp2">Apellido Materno</label>
+            <input type="text" name="personCCAIAp2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras"
+                placeholder="Escribe aquí..." autocomplete="off" required>
+        </div>
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+<div class="table-alldetections">
+    <div class="persons-table">
+        {% if AllDetections %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido 1</th>
+                        <th>Apellido 2</th>
+                        <th>Puesto</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Fecha/Hora de Detección</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha in AllDetections %}
+                        <tr>
+                            <td>{{ Nombre }}</td>
+                            <td>{{ Apellido_1 }}</td>
+                            <td>{{ Apellido_2 }}</td>
+                            <td>{{ Puesto }}</td>
+                            <td>{{ HorarioEnt }}</td>
+                            <td>{{ HorarioSal }}</td>
+                            <td>{{ Fecha }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2>No hay ningún dato...</h2>
+        {% endif%}
+    </div>
+</div>
+</div>
+<footer class="hidden Copyright" style="color: black;">
+    <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>
+</footer>
+{% endblock %}

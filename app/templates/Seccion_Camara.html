@@ -5,44 +5,50 @@
     <h1 style=" text-align: center;">Cámara en Tiempo Real</h1>
     <div class="camera-container">
         <figure class="Camera">
-            <img src="{{ url_for('Camera_Activate') }}" alt="Cámara ejecutandose" id="Canon-Camera">
-            <!-- <img src="" alt="Cámara ejecutandose" id="Canon-Camera"> -->
+            <!-- <img src="{{ url_for('Camera_Activate') }}" alt="Error al ejecutar cámara, volver a cargar" id="Canon-Camera"> -->
+            <img src="" alt="Error al ejecutar cámara, volver a cargar" id="Canon-Camera">
         </figure>
-        <div class="people-detected">
-            <h2>Personal Detectado</h2>
-            <form action="/Delete_User" method="post">
-                <div class="users-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Apellido 1</th>
-                                <th>Apellido 2</th>
-                                <th>Puesto</th>
-                                <th>Entrada</th>
-                                <th>Salida</th>
-                                <th>Fecha</th>
-                            </tr>
-                        </thead>
 
-                        <tbody>
-                            {% for Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha in personsDetected %}
-                            <tr>
-                                <td>{{ Nombre }}</td>
-                                <td>{{ Apellido_1 }}</td>
-                                <td>{{ Apellido_2 }}</td>
-                                <td>{{ Puesto }}</td>
-                                <td>{{ HorarioEnt }}</td>
-                                <td>{{ HorarioSal }}</td>
-                                <td>{{ Fecha }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        <div class="people-detected">
+            <h2 style="margin-top: 0;">Personal Detectado</h2>
+            <form action="/Seccion_Camara"><input type="submit" value="Actualizar tabla"></form>
+                <div class="users-table">
+                    {% if AllDetections %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Apellido 1</th>
+                                    <th>Apellido 2</th>
+                                    <th>Puesto</th>
+                                    <th>Entrada</th>
+                                    <th>Salida</th>
+                                    <th>Fecha/Hora de Detección</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha in
+                                personsDetected %}
+                                <tr>
+                                    <td>{{ Nombre }}</td>
+                                    <td>{{ Apellido_1 }}</td>
+                                    <td>{{ Apellido_2 }}</td>
+                                    <td>{{ Puesto }}</td>
+                                    <td>{{ HorarioEnt }}</td>
+                                    <td>{{ HorarioSal }}</td>
+                                    <td>{{ Fecha }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <h2 style="text-align: center;">No hay ningún dato hoy...</h2>
+                    {% endif%}
                 </div>
-            </form>
         </div>
     </div>
+    
 </div>
 <footer class="hidden Copyright" style="color: black;">
     <h6>© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli.</h6>

@@ -4,10 +4,9 @@ import secrets
 import string
 from email.message import EmailMessage
 import smtplib
-# from email.mime.multipart import MIMEMultipart
-# from email.mime.text import MIMEText
 
-
+######################################################################################################################################
+# Función generar codigos de restauración de contraseña
 def Code_Generate():
     letras = string.ascii_letters
     numeros = string.digits
@@ -17,30 +16,23 @@ def Code_Generate():
     for i in range(psw_tam):
         password += ''.join(secrets.choice(Alfabeto)).upper()
     return password
+######################################################################################################################################
 
-
+# Carfar variables de entorno
 load_dotenv()
-remitente = os.getenv('MY_EMAIL')
-destinatario = 'erne01608@gmail.com'
-code = Code_Generate()
-mensaje = f"""Vision AI
-Inteligencia Artificial para Videovigilancia
 
-Este es su código para restablecer su contraseña.
+######################################################################################################################################
+# Función enviar Correos planos
+def SendFlatEmail(remitente, destinatario, mensaje, asunto):
 
-{code}
+    email = EmailMessage()
+    email['Subject'] = asunto
+    email['From'] = remitente
+    email['To'] = destinatario
+    email.set_content(mensaje)
 
-© 2024 Tecnológico de Estudios Superiores de Cuautitlán Izcalli."""
-
-email = EmailMessage()
-email['Subject'] = 'Código de confirmación | Vision AI'
-email['From'] = remitente
-email['To'] = destinatario
-email.set_content(mensaje)
-
-server = smtplib.SMTP_SSL(os.getenv('SMPT_SSL'))
-server.login(remitente, os.getenv('MY_PASSWORD_EMAIL'))
-
-server.sendmail(remitente, destinatario, email.as_string())
-
-server.quit()
+    flatServer = smtplib.SMTP_SSL(os.getenv('SMPT_SSL'))
+    flatServer.login(remitente, os.getenv('MY_PASSWORD_EMAIL'))
+    flatServer.sendmail(remitente, destinatario, email.as_string())
+    flatServer.quit()
+######################################################################################################################################

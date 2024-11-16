@@ -47,53 +47,59 @@
 
             <div class="db-images">
                 <form action="/DB_Img_Update" method="post" onload="" onsubmit="return Confirm_UpImg_Funtion()">
-                    <h4>¿Realizó escaneos de rostros?</h4>
+                    <h4>¿Realizó actualizaciones de datos o escaneos de rostros?</h4>
                     <p style="margin: 0;">Actualize la base de datos de las imagenes</p>
                     <input type="submit" id="images-update" value="Actualizar imágenes para el escaneo">
                 </form>
             </div>
+            <h2>Personal CCAI Registrado Actualmente</h2>
+
         </div>
 
         <div class="all-personalCCAI">
-            {% for person_id, D1, D2, D3, D4, D5, D6 in PersonsCCAI %}
-                <div class="person">
-                    <figure class="buttons-and-img">
-                        <img src="{{ url_for('static', filename = 'Images/perfil.webp') }}" alt="Usuario" width="150" height="150">
+            {% if PersonsCCAI %}
+                {% for person_id, D1, D2, D3, D4, D5, D6 in PersonsCCAI %}
+                    <div class="person">
+                        <figure class="buttons-and-img">
+                            <img src="{{ url_for('static', filename = 'Images/perfil.webp') }}" alt="Usuario" width="150" height="150">
 
-                        <form action="/Delete_PersonCCAI" method="post" onsubmit="return Confirm_Delete_Funtion()">
-                            <input type="submit" value="Eliminar" id="DeletePerson">
-                            <input type="hidden" name="person_id" value="{{ person_id }}">
+                            <form action="/Delete_PersonCCAI" method="post" onsubmit="return Confirm_Delete_Funtion()">
+                                <input type="submit" value="Eliminar" id="DeletePerson">
+                                <input type="hidden" name="person_id" value="{{ person_id }}">
+                            </form>
+
+                            <form action="/Face_Capture" method="post">
+                                <input type="hidden" name="person_id" readonly value="{{ person_id }}">
+                                <input type="submit" value="Tomar fotos" id="FaceCam" onclick="Open_New_Window()">
+                            </form>
+                        </figure>
+
+                        <form class="all-personal-data" action="/Change_Data_Person" method="post" onsubmit="return Confirm_Update_Funtion()">
+                            <input type="hidden" name="person_id" value="{{ person_id }}" readonly>
+                            <label for="NamePersonCCAI">Nombre</label>
+                            <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">
+
+                            <label for="Ap1PersonalCCAI">Apellido Paterno</label>
+                            <input type="text" id="Ap1PersonalCCAI" name="Ap1PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ D2 }}">
+
+                            <label for="Ap2PersonalCCAI">Apellido Materno</label>
+                            <input type="text" name="Ap2PersonalCCAI" id="Ap2PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D3 }}">
+
+                            <label for="JobPersonCCAI">Puesto</label>
+                            <input type="text" name="JobPersonCCAI" id="JobPersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D4 }}">
+
+                            <label for="SHPersonCCAI">Horario de entrada <sup>(24h)</sup></label>
+                            <input type="text" name="SHPersonCCAI" id="SHPersonCCAI" pattern="^[0-9]+$" title="Solo se permiten números" required autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ D5 }}">
+
+                            <label for="EHPersonCCAI">Horario de salida <sup>(24h)</sup></label>
+                            <input type="text" name="EHPersonCCAI" id="EHPersonCCAI" required autocomplete="off" placeholder="Escribe aquí..."maxlength="2"value= "{{ D6 }}">
+                            <input type="submit" value="Actualizar">
                         </form>
-
-                        <form action="/Face_Capture" method="post">
-                            <input type="hidden" name="person_id" readonly value="{{ person_id }}">
-                            <input type="submit" value="Tomar fotos" id="FaceCam" onclick="Open_New_Window()">
-                        </form>
-                    </figure>
-
-                    <form class="all-personal-data" action="/Change_Data_Person" method="post" onsubmit="return Confirm_Update_Funtion()">
-                        <input type="hidden" name="person_id" value="{{ person_id }}" readonly>
-                        <label for="NamePersonCCAI">Nombre</label>
-                        <input type="text" name="NamePersonCCAI" id="NamePersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D1 }}">
-
-                        <label for="Ap1PersonalCCAI">Apellido Paterno</label>
-                        <input type="text" id="Ap1PersonalCCAI" name="Ap1PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ D2 }}">
-
-                        <label for="Ap2PersonalCCAI">Apellido Materno</label>
-                        <input type="text" name="Ap2PersonalCCAI" id="Ap2PersonalCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D3 }}">
-
-                        <label for="JobPersonCCAI">Puesto</label>
-                        <input type="text" name="JobPersonCCAI" id="JobPersonCCAI" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" required autocomplete="off" placeholder="Escribe aquí..." value= "{{ D4 }}">
-
-                        <label for="SHPersonCCAI">Horario de entrada <sup>(24h)</sup></label>
-                        <input type="text" name="SHPersonCCAI" id="SHPersonCCAI" pattern="^[0-9]+$" title="Solo se permiten números" required autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ D5 }}">
-
-                        <label for="EHPersonCCAI">Horario de salida <sup>(24h)</sup></label>
-                        <input type="text" name="EHPersonCCAI" id="EHPersonCCAI" required autocomplete="off" placeholder="Escribe aquí..."maxlength="2"value= "{{ D6 }}">
-                        <input type="submit" value="Actualizar">
-                    </form>
-                </div>
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2 style="text-align: center;">No hay ninguna persona resgistrada...</h2>
+            {% endif%}
         </div>
     </div>
     <footer class="hidden Copyright" style="color: black;">

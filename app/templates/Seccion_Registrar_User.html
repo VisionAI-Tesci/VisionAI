@@ -9,34 +9,34 @@
 
                 <section class="full-personal-name">
                     <div class="personal-name">
-                        <label for="username">Username</label>
-                        <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required autofocus>
+                        <label for="newusername">Username</label>
+                        <input type="text" name="newusername" pattern="^[A-Za-z0-9_-]+$" title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí..." autocomplete="off" required>
                     </div>
 
                     <div class="personal-name">
-                        <label for="name">Nombre</label>
+                        <label for="newname">Nombre</label>
                         <input type="text" name="newname" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
                     </div>
 
                     <div class="personal-name">
-                        <label for="ap1">Apellido Paterno</label>
+                        <label for="newap1">Apellido Paterno</label>
                         <input type="text" name="newap1" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
                     </div>
 
                     <div class="personal-name">
-                        <label for="ap2">Apellido Materno</label>
+                        <label for="newap2">Apellido Materno</label>
                         <input type="text" name="newap2" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras" placeholder="Escribe aquí..." autocomplete="off" required>
                     </div>
                 </section>
 
                 <section class="full-personal-name">
                     <div class="personal-name">
-                        <label for="correo">Correo Electrónico</label>
+                        <label for="newcorreo">Correo Electrónico</label>
                         <input type="email" name="newcorreo" placeholder="Escribe aquí..." autocomplete="off" required>
                     </div>
 
                     <div class="personal-name">
-                        <label for="type">Tipo de Usuario</label>
+                        <label for="newtype">Tipo de Usuario</label>
                         <select name="newtype" id="type" required>
                             <option value="" disabled selected>Selecciona una opción</option>
                             <option value="Administrador">Administrador</option>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="personal-name">
-                        <label for="pass">Contraseña</label>
+                        <label for="newpass">Contraseña</label>
                         <input type="password" name="newpass" placeholder="Escribe aquí..." required>
                     </div>
                 </section>
@@ -55,37 +55,41 @@
         </div>
         <h2>Usuarios Registrados Actualmente</h2>
         <div class="all-personalCCAI">
-            {% for ID, UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
-                <div class="person">
-                    <figure class="buttons-and-img">
-                        <img src="{{ url_for('static', filename = 'Images/user-Vision.webp') }}" alt="Usuario" width="150" height="150">
-                    </figure>
+            {% if users %}
+                {% for ID, UserName, Nombre, Apellido_1, Apellido_2, Email, Type_user in users %}
+                    <div class="person">
+                        <figure class="buttons-and-img">
+                            <img src="{{ url_for('static', filename = 'Images/user-Vision.webp') }}" alt="Usuario" width="150" height="150">
+                        </figure>
 
-                    <form class="all-personal-data" action="/Delete_User" method="post" onsubmit="return Confirm_Delete_Funtion()">
-                        <input type="hidden" name="user_id" value="{{ ID }}" readonly required>
+                        <form class="all-personal-data" action="/Delete_User" method="post" onsubmit="return Confirm_Delete_Funtion()">
+                            <input type="hidden" name="user_id" value="{{ ID }}" readonly required>
 
-                        <label for="username">Username</label>
-                        <input type="text" name="username" pattern="^[A-Za-z0-9_-]+$" readonly title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí" value="{{ UserName }}">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" pattern="^[A-Za-z0-9_-]+$" readonly title="Solo se permiten letras, números, guiones medios y bajos" placeholder="Escribe aquí" value="{{ UserName }}">
 
-                        <label for="Name-User">Nombre</label>
-                        <input type="text" name="Name-User" id="Name-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Nombre }}">
+                            <label for="Name-User">Nombre</label>
+                            <input type="text" name="Name-User" id="Name-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Nombre }}">
 
-                        <label for="Ap1-User">Apellido Paterno</label>
-                        <input type="text" id="Ap1-User" name="Ap1-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_1 }}">
+                            <label for="Ap1-User">Apellido Paterno</label>
+                            <input type="text" id="Ap1-User" name="Ap1-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras" autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_1 }}">
 
-                        <label for="Ap2-User">Apellido Materno</label>
-                        <input type="text" name="Ap2-User" id="Ap2-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_2 }}">
+                            <label for="Ap2-User">Apellido Materno</label>
+                            <input type="text" name="Ap2-User" id="Ap2-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly title="Solo se permiten letras"  autocomplete="off" placeholder="Escribe aquí..." value= "{{ Apellido_2 }}">
 
-                        <label for="Email-User">Correo</label>
-                        <input type="text" name="Email-User" id="Email-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly autocomplete="off" placeholder="Escribe aquí..." value= "{{ Email }}">
+                            <label for="Email-User">Correo</label>
+                            <input type="text" name="Email-User" id="Email-User" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" readonly autocomplete="off" placeholder="Escribe aquí..." value= "{{ Email }}">
 
-                        <label for="Type-User">Tipo de usuario</label>
-                        <input type="text" name="Type-User" id="Type-User" pattern="^[0-9]+$" readonly title="Solo se permiten números"  autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ Type_user }}">
+                            <label for="Type-User">Tipo de usuario</label>
+                            <input type="text" name="Type-User" id="Type-User" pattern="^[0-9]+$" readonly title="Solo se permiten números"  autocomplete="off" placeholder="Escribe aquí..." maxlength="2" value= "{{ Type_user }}">
 
-                        <input type="submit" value="Eliminar" id="DeletePerson">
-                    </form>
-                </div>
-            {% endfor %}
+                            <input type="submit" value="Eliminar" id="DeletePerson">
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2 style="text-align: center;">No hay ningún usuario registrado...</h2>
+            {% endif%}
         </div>
     </div>
     <footer class="hidden Copyright" style="color: black;">

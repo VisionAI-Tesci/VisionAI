@@ -592,25 +592,88 @@ input[type="submit"]:hover {
 }
 
 /* Sección Camara (Inicio) */
+.section-camera-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .camera-container{
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content: space-around;
 }
+
 .Camera{
     display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #A7E6FF;
     width: 650px;
-    height: 490px;
+    height: 500px;
     margin: 0px;
     padding: 10px;
 }
+#Canon-Camera{
+    width: 100%;
+
+}
 .people-detected{
-    width: 50%;
+    max-height: 500px;
     padding: 10px;
+    overflow: auto;
+}
+.users-table{
+    padding: 0px 5px 5px 5px;
+}
+.users-table th, tr, td{
+    border: 1px solid #000FE0;
+    border-radius: 3px;
+    padding: 4px;
+    text-align: center;
+    font-size: 12px;
+}
+.users-table th, tr{
+    background-color: #A7E6FF;
+}
+/* Seccion de detecciones */
+.container-allperson-detections{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.container-orderBy{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.container-orderBy form{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.table-alldetections{
+    max-height: 500px;
+    overflow: auto; 
+}
+.persons-table{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.persons-table th, tr, td{
+    border: 2px solid #000FE0;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 14px;
+}
+.persons-table th, tr{
+    background-color: #A7E6FF;
 }
 /* Seccion de datos del usuario */
 .container-user {
@@ -743,20 +806,6 @@ input[type="submit"]:hover {
     text-align: start;
 }
 
-.users-table{
-    padding: 0px 20px 20px 20px;
-}
-.users-table table{
-    margin-bottom: 15px;
-}
-.users-table th, tr, td{
-    border: 2px solid #000FE0;
-    border-radius: 3px;
-    padding: 5px;
-}
-.users-table th, tr{
-    background-color: #A7E6FF;
-}
 .container-personal-registrer{
     display: flex;
     flex-direction: column;
@@ -909,6 +958,22 @@ input[type="submit"]:hover {
         margin-right: 7px;
         padding: 0px;
     }
+    /* Seccion Camara */
+    .camera-container{
+        flex-wrap: wrap;
+    }
+    .Camera{
+        justify-content: center;
+        align-items: start;
+        height: max-content;
+    }
+    .people-detected{
+        width: 100%;
+    }
+    .users-table th, tr, td{
+        font-size: 0.9em;
+    }
+
     /* Seccion Personal CCAI */
     .full-personal-name, .full-data-job{
         justify-content: center;
@@ -926,10 +991,6 @@ input[type="submit"]:hover {
 
     .container-how-use iframe {
         width: 100%;
-    }
-    .users-table{
-        word-wrap: break-word;
-        overflow-x: scroll;
     }
 
 }
