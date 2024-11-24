@@ -11,6 +11,7 @@ $(document).ready(function () {
     $('.container-user').removeClass('hidden');
     $('.container-allperson-detections').removeClass('hidden');
     $('body').css("overflow", "visible");
+    isMobileDevice()
 });
 
 // Funciones de confirmar acciones
@@ -43,4 +44,11 @@ function Confirm_UpImg_Funtion() {
 }
 function Open_New_Window() {
     window.open("/Seccion_Fotos", "_blank", "left = 500,menubar=0,location=yes,resizable=0,scrollbars=0,status=1,titlebar=0,width=670,height=500");
+}
+function isMobileDevice() {
+    let isMobile=/Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile){
+        $(".form-face-cam").addClass("hidden");
+    }
 }

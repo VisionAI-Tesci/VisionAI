@@ -12,7 +12,8 @@
         <form action="/Seccion_Deteccion"><input type="submit" value="Actualizar tabla"></form>
     </div>
     <h4>Buscar por Nombre:</h4>
-    <form class="full-personal-name" action="SearchPersonData" method="post">
+
+    <form class="full-name-person" action="SearchPersonData" method="post">
         <div class="personal-name">
             <label for="personCCAIName">Nombre</label>
             <input type="text" name="personCCAIName" pattern="^[A-Za-zñÑáéíóúÁÉÍÓÚ ]+$" title="Solo se permiten letras"
@@ -32,6 +33,12 @@
         </div>
         <input type="submit" value="Buscar">
     </form>
+    <form action="/SearchForDate" method="post">
+        <h4>Buscar por fecha:</h4>
+        <input type="date" min="2024-01-01" name="DateBox">
+        <input type="submit" value="Buscar">
+    </form>
+
 </div>
 <div class="table-alldetections">
     <div class="persons-table">

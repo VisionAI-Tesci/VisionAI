@@ -22,7 +22,7 @@ def SearchDataPerson(connection, namePerson, ap1Person, ap2Person):
 def InsertInLog (connection, namePerson, ap1Person, ap2Person, Job, startHour, endHour):
     try:
         cur = connection.cursor()
-        dateNow = str(dt.datetime.now().strftime("%d-%b-%Y %H:%M:%S"))
+        dateNow = str(dt.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
         cur.execute("INSERT INTO personsdetections (Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha) VALUES (%s, %s, %s, %s, %s, %s, %s)",(namePerson, ap1Person, ap2Person, Job, startHour, endHour,dateNow))
         connection.commit()
         cur.close()

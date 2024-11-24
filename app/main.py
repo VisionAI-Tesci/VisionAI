@@ -1,13 +1,9 @@
-import cv2, keyboard, secrets, bcrypt, os, smtplib, string, secrets, face_recognition,socket
+import cv2, secrets, bcrypt, os, secrets, face_recognition,socket
 import ModeloDlib as MDlib
 import faceRecognition as face_rec
-import datetime as dt
 from flask import Flask, Response, render_template, request, session, redirect, url_for, flash
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.message import EmailMessage
 from sendHtmlEmail import SendHTMLEmail
 from sendEmail import SendFlatEmail, Code_Generate
 
@@ -283,6 +279,37 @@ def SearchPersonData():
             sql_Value = cur.fetchall()
 
         if sql_Value != None:
+            if 'is_Admin' in session:
+                return render_template("Seccion_Detecciones.html",Admin= session.get("is_Admin"), AllDetections=sql_Value)
+            elif 'is_Super' in session:
+                return render_template("Seccion_Detecciones.html",Super= session.get("is_Super"), AllDetections=sql_Value)
+            else:
+                flash('No se pudo asignar un tipo de usuario', 'error')
+        else:
+            flash("No hay registros aún.","info")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+        print(error)
+
+    return redirect(url_for("Seccion_Deteccion"))
+######################################################################################################################################
+# Sección buscar por fecha en tabla detecciones
+@app.route("/SearchForDate", methods=["POST"])
+def SearchForDate():
+    try:
+        if 'userName' in session:
+            Date = request.form["DateBox"].strip()
+            Date = Date.split("-")
+            year, month, day = Date
+            Date = f"{day}-{month}-{year}"
+            print(Date)
+            cur = MySqlDB.connection.cursor()
+            like_pattern = f"{Date}%"
+            cur.execute("SELECT Nombre, Apellido_1, Apellido_2, Puesto, HorarioEnt, HorarioSal, Fecha FROM personsdetections WHERE Fecha LIKE %sORDER BY Fecha DESC", (like_pattern,))
+            sql_Value = cur.fetchall()
+
+        if sql_Value:
             if 'is_Admin' in session:
                 return render_template("Seccion_Detecciones.html",Admin= session.get("is_Admin"), AllDetections=sql_Value)
             elif 'is_Super' in session:
@@ -788,7 +815,16 @@ def Face_Capture():
 #Función Tomar fotos de rostros
 @app.route('/Face_Photos_Capture')
 def Face_Photos_Capture():
-        return Response(MDlib.Face_Capture(session.get('fullNameCCAI')), mimetype='multipart/x-mixed-replace; boundary=frame')
+    try:
+        if 'userName' in session and ('is_Super' in session or 'is_Admin' in session):
+            return Response(MDlib.Face_Capture(session.get('fullNameCCAI')), mimetype='multipart/x-mixed-replace; boundary=frame')
+        else:
+            flash("No se ha iniciado sesión","error")
+
+    except Exception as error:
+        flash(f"HA OCURRIDO UN ERROR: {error}", 'error')
+
+    return redirect(url_for("index"))
 ######################################################################################################################################
 #Función ACTUALIZAR BD DE IMAGENES DE LOS ROSTROS
 @app.route("/DB_Img_Update", methods=["POST"])

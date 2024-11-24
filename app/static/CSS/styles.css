@@ -418,6 +418,7 @@ body {
     border-radius: 5px;
     border: 3px solid rgb(255, 193, 7);
 }
+
 .message {
     width: max-content;
     justify-self: center;
@@ -439,18 +440,22 @@ body {
     background-color: rgb(145, 16, 42);
 }
 
-input,select {
+input,
+select {
     box-sizing: border-box;
     padding: 5px;
-    margin: 10px 0px 10px 0px; /* ALTO DERECHA ABAJO IZQUIERDA */
+    margin: 10px 0px 10px 0px;
+    /* ALTO DERECHA ABAJO IZQUIERDA */
     border: 2px #3572EF solid;
     border-radius: 5px;
     color: #000000;
     width: 100%;
 }
-option:focus-within{
+
+option:focus-within {
     background-color: #3572EF;
 }
+
 input[type="submit"] {
     background-color: #3572EF;
     color: #ffffff;
@@ -541,11 +546,6 @@ input[type="submit"]:hover {
     width: 100%;
 }
 
-/* .user-name {
-    text-align: center;
-} */
-
-
 .navigation-bar {
     display: flex;
     align-items: center;
@@ -555,6 +555,7 @@ input[type="submit"]:hover {
     justify-content: space-between;
     word-wrap: break-word;
 }
+
 .user-options {
     display: flex;
     align-items: center;
@@ -592,19 +593,20 @@ input[type="submit"]:hover {
 }
 
 /* Sección Camara (Inicio) */
-.section-camera-container{
+.section-camera-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-.camera-container{
+
+.camera-container {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.Camera{
+.Camera {
     display: flex;
     background-color: #A7E6FF;
     width: 650px;
@@ -612,30 +614,13 @@ input[type="submit"]:hover {
     margin: 0px;
     padding: 10px;
 }
-#Canon-Camera{
+
+#Canon-Camera {
     width: 100%;
 
 }
-.people-detected{
-    max-height: 500px;
-    padding: 10px;
-    overflow: auto;
-}
-.users-table{
-    padding: 0px 5px 5px 5px;
-}
-.users-table th, tr, td{
-    border: 1px solid #000FE0;
-    border-radius: 3px;
-    padding: 4px;
-    text-align: center;
-    font-size: 12px;
-}
-.users-table th, tr{
-    background-color: #A7E6FF;
-}
 /* Seccion de detecciones */
-.container-allperson-detections{
+.container-allperson-detections {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -643,7 +628,8 @@ input[type="submit"]:hover {
     align-items: center;
     width: 100%;
 }
-.container-orderBy{
+
+.container-orderBy {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -651,30 +637,44 @@ input[type="submit"]:hover {
     align-items: center;
     width: 100%;
 }
-.container-orderBy form{
+
+.container-orderBy form {
     margin-right: 5px;
     margin-left: 5px;
 }
-.table-alldetections{
-    max-height: 500px;
-    overflow: auto; 
+
+.full-name-person {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
-.persons-table{
+
+.table-alldetections {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
-.persons-table th, tr, td{
+
+.persons-table,.people-detected {
+    max-height: 500px;
+    max-width: max-content;
+    overflow: auto;
+}
+
+.persons-table th,tr,td, .users-table th, tr, td {
     border: 2px solid #000FE0;
     border-radius: 3px;
     text-align: center;
     font-size: 14px;
 }
-.persons-table th, tr{
+
+.persons-table th,tr, .users-table th, tr{
     background-color: #A7E6FF;
 }
+
 /* Seccion de datos del usuario */
 .container-user {
     display: flex;
@@ -776,7 +776,7 @@ input[type="submit"]:hover {
 }
 
 /* Seccion Registrar Usuarios */
-.container-user-registrer{
+.container-user-registrer {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -785,12 +785,13 @@ input[type="submit"]:hover {
     width: 100%;
 }
 
-.user-registrer{
+.user-registrer {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.form-registrer{
+
+.form-registrer {
     display: flex;
     flex-direction: column;
     padding: 30px;
@@ -802,11 +803,12 @@ input[type="submit"]:hover {
     box-shadow: 0px 0px 30px rgba(227, 228, 237,0.37);
     border: 2px solid rgba(255, 255, 255, 0.18); */
 }
-.user-registrer label{
+
+.user-registrer label {
     text-align: start;
 }
 
-.container-personal-registrer{
+.container-personal-registrer {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -814,23 +816,29 @@ input[type="submit"]:hover {
     align-items: center;
     width: 100%;
 }
-.personal-registrer{
+
+.personal-registrer {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.full-personal-name, .full-data-job{
+
+.full-personal-name,
+.full-data-job {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: start;
 }
-.personal-name, .data-job{
+
+.personal-name,
+.data-job {
     display: flex;
     flex-direction: column;
     padding-right: 20px;
 }
-.form-personal-registrer{
+
+.form-personal-registrer {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -842,27 +850,30 @@ input[type="submit"]:hover {
     margin: 10px;
 }
 
-.db-images{
+.db-images {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
     text-align: center;
 }
-#images-update{
+
+#images-update {
     background-color: #06D001;
 }
-.all-personalCCAI{
+
+.all-personalCCAI {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: 10px;
-    margin-top: 10px ;
+    margin-top: 10px;
     padding-top: 0px;
     justify-content: center;
     align-items: center;
 }
-.person{
+
+.person {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -872,26 +883,33 @@ input[type="submit"]:hover {
     padding: 10px;
     margin: 5px;
 }
-.all-personal-data{
+
+.all-personal-data {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.buttons-and-img{
+
+.buttons-and-img {
     margin: 20px;
 }
-#DeletePerson{
+
+#DeletePerson {
     background-color: crimson;
 }
-#DeletePerson:hover, #FaceCam:hover, #images-update:hover {
+
+#DeletePerson:hover,
+#FaceCam:hover,
+#images-update:hover {
     background-color: #292929;
     box-shadow: 2px 2px 5px #ffffff;
 }
-#FaceCam{
+
+#FaceCam {
     background-color: #06D001;
 }
 
-.FaceScan{
+.FaceScan {
     width: 100%;
     height: auto;
     display: flex;
@@ -899,15 +917,18 @@ input[type="submit"]:hover {
     align-items: center;
     overflow: hidden;
 }
-#Face{
+
+#Face {
     width: 100%;
 }
+
 /* Media queries */
 @media (min-width: 1024px) and (max-width: 1200px) {
     body {
         font-size: 1.2em;
     }
 }
+
 @media (min-width: 320px) and (max-width: 480px) {
     body {
         font-size: 0.7em;
@@ -929,7 +950,8 @@ input[type="submit"]:hover {
     .container_Login {
         width: 100%;
     }
-    .navigation-bar{
+
+    .navigation-bar {
         overflow-x: scroll;
         font-size: 0.9em;
         padding: 0px 0px 0px 0px;
@@ -937,45 +959,61 @@ input[type="submit"]:hover {
         justify-content: start;
 
     }
-    .navigation-bar a{
+
+    .navigation-bar a {
         padding: 10px;
     }
-    #logo{
-        height: auto;
-        width: 30px;
-    }   
-    #User-icon{
+
+    #logo {
         height: auto;
         width: 30px;
     }
 
-    .container-data-user img{
+    #User-icon {
+        height: auto;
+        width: 30px;
+    }
+
+    .container-data-user img {
         width: 90px;
         height: 90px;
     }
+
     .user-options input {
         font-size: 0.9em;
         margin-right: 7px;
         padding: 0px;
     }
+
     /* Seccion Camara */
-    .camera-container{
+    .camera-container {
         flex-wrap: wrap;
     }
-    .Camera{
+
+    .Camera {
         justify-content: center;
         align-items: start;
         height: max-content;
     }
-    .people-detected{
+
+    .people-detected {
         width: 100%;
     }
-    .users-table th, tr, td{
+
+    .persons-table {
+        justify-content: start;
+        align-items: start;
+    }
+
+    .persons-table th,
+    tr,
+    td {
         font-size: 0.9em;
     }
 
     /* Seccion Personal CCAI */
-    .full-personal-name, .full-data-job{
+    .full-personal-name,
+    .full-data-job {
         justify-content: center;
     }
 

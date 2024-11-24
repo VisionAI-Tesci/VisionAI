@@ -103,7 +103,7 @@ def process_Camara():
                             InsertInLog(connection, NameIn, Ap1In, Ap2IN, Job, StartHour, EndHour)
                             color = (255, 0, 0)
                 else:
-                    NameIn= Ap1In= Ap2IN= Job= StartHour= EndHour = "DESCONOCIDO"
+                    NameIn = Ap1In = Ap2IN = Job = StartHour = EndHour = "DESCONOCIDO"
                     InsertInLog(connection, NameIn, Ap1In, Ap2IN, Job, StartHour, EndHour)
 
                 top, right, bottom, left = [coord * 4 for coord in face_location]
